@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>试卷预览 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-preview.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部工具栏 -->
+    <header class="preview-toolbar">
+        <div class="toolbar-left">
+            <button class="btn btn-secondary" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                返回编辑
+            </button>
+            <div class="toolbar-divider"></div>
+            <div class="paper-info">
+                <h1 id="paperTitle">试卷预览</h1>
+                <div class="paper-meta">
+                    <span id="paperSubject">学科：数学</span>
+                    <span id="paperDuration">时长：120分钟</span>
+                    <span id="paperScore">总分：100分</span>
+                    <span id="paperQuestionCount">题数：10题</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="toolbar-right">
+            <div class="view-controls">
+                <button class="view-btn active" data-view="student" onclick="switchView('student')" title="学生视图">
+                    <i class="fas fa-user-graduate"></i>
+                    学生视图
+                </button>
+                <button class="view-btn" data-view="teacher" onclick="switchView('teacher')" title="教师视图">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    教师视图
+                </button>
+            </div>
+            
+            <div class="toolbar-divider"></div>
+            
+            <div class="zoom-controls">
+                <button class="btn-icon" onclick="zoomOut()" title="缩小">
+                    <i class="fas fa-search-minus"></i>
+                </button>
+                <span class="zoom-level" id="zoomLevel">100%</span>
+                <button class="btn-icon" onclick="zoomIn()" title="放大">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+            </div>
+            
+            <div class="toolbar-divider"></div>
+            
+            <button class="btn btn-secondary" onclick="printPaper()">
+                <i class="fas fa-print"></i>
+                打印试卷
+            </button>
+            <button class="btn btn-secondary" onclick="exportPDF()">
+                <i class="fas fa-file-pdf"></i>
+                导出PDF
+            </button>
+            <button class="btn btn-primary" onclick="editPaper()">
+                <i class="fas fa-edit"></i>
+                编辑试卷
+            </button>
+        </div>
+    </header>
+
+    <!-- 主要预览内容 -->
+    <main class="preview-main">
+        <!-- 左侧题目导航 -->
+        <aside class="question-navigator" id="questionNavigator">
+            <div class="navigator-header">
+                <h3>
+                    <i class="fas fa-list-ol"></i>
+                    题目导航
+                </h3>
+                <button class="btn-icon" onclick="toggleNavigator()" title="隐藏导航">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="navigator-content">
+                <div class="question-nav-list" id="questionNavList">
+                    <!-- 题目导航项将通过JavaScript动态生成 -->
+                </div>
+                
+                <div class="navigator-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">总题数：</span>
+                        <span class="stat-value" id="navTotalQuestions">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">总分值：</span>
+                        <span class="stat-value" id="navTotalScore">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">平均分值：</span>
+                        <span class="stat-value" id="navAvgScore">0</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 试卷内容区域 -->
+        <div class="paper-container" id="paperContainer">
+            <div class="paper-sheet">
+                <!-- 试卷头部 -->
+                <div class="paper-header">
+                    <div class="school-info">
+                        <div class="school-name">__________________学校</div>
+                        <div class="exam-info">
+                            <span>班级：___________</span>
+                            <span>姓名：___________</span>
+                            <span>学号：___________</span>
+                        </div>
+                    </div>
+                    
+                    <div class="paper-title-section">
+                        <h1 class="paper-main-title" id="paperMainTitle">试卷标题</h1>
+                        <div class="paper-subtitle">
+                            <span class="subject-tag" id="subjectTag">数学</span>
+                            <span class="difficulty-tag" id="difficultyTag">中等难度</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exam-instructions">
+                        <div class="instruction-item">
+                            <strong>考试时间：</strong><span id="examDuration">120</span>分钟
+                        </div>
+                        <div class="instruction-item">
+                            <strong>满分：</strong><span id="examTotalScore">100</span>分
+                        </div>
+                        <div class="instruction-item">
+                            <strong>注意事项：</strong>
+                            <ol>
+                                <li>答卷前请仔细阅读各题目要求</li>
+                                <li>选择题请在答题卡上涂黑对应选项</li>
+                                <li>解答题请在指定位置作答，保持卷面整洁</li>
+                                <li>考试结束时，请将试卷和答题卡一并交回</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 试卷内容 -->
+                <div class="paper-content" id="paperContent">
+                    <!-- 题目内容将通过JavaScript动态生成 -->
+                    <div class="empty-paper">
+                        <div class="empty-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>暂无题目内容</h3>
+                        <p>请返回编辑页面添加题目</p>
+                        <button class="btn btn-primary" onclick="editPaper()">
+                            <i class="fas fa-edit"></i>
+                            编辑试卷
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 试卷底部信息 -->
+                <div class="paper-footer" id="paperFooter" style="display: none;">
+                    <div class="footer-content">
+                        <div class="creation-info">
+                            <span>创建时间：<span id="creationDate">2025-08-03</span></span>
+                            <span>创建者：<span id="creator">张老师</span></span>
+                        </div>
+                        <div class="paper-description" id="paperDescription">
+                            <!-- 试卷描述 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 导航切换按钮（当导航隐藏时显示） -->
+    <button class="nav-toggle-btn" id="navToggleBtn" onclick="toggleNavigator()" style="display: none;">
+        <i class="fas fa-bars"></i>
+        <span>题目导航</span>
+    </button>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" style="display: none;">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- 快捷键提示 -->
+    <div class="keyboard-shortcuts" id="keyboardShortcuts" style="display: none;">
+        <div class="shortcuts-content">
+            <h3>快捷键</h3>
+            <div class="shortcut-list">
+                <div class="shortcut-item">
+                    <kbd>Ctrl</kbd> + <kbd>P</kbd>
+                    <span>打印试卷</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>Ctrl</kbd> + <kbd>E</kbd>
+                    <span>编辑试卷</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>Ctrl</kbd> + <kbd>+</kbd>
+                    <span>放大</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>Ctrl</kbd> + <kbd>-</kbd>
+                    <span>缩小</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>F11</kbd>
+                    <span>全屏模式</span>
+                </div>
+                <div class="shortcut-item">
+                    <kbd>Esc</kbd>
+                    <span>返回编辑</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 打印确认对话框 -->
+    <div class="modal" id="printModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>打印试卷</h3>
+                <button class="modal-close" onclick="closePrintModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="print-options">
+                    <div class="print-section">
+                        <h4>打印设置</h4>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="printAnswers" checked>
+                                包含答案和解析（教师版）
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="printHeader" checked>
+                                包含试卷头部信息
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="printFooter">
+                                包含试卷底部信息
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="print-section">
+                        <h4>页面设置</h4>
+                        <div class="form-group">
+                            <label for="paperSize">纸张大小：</label>
+                            <select id="paperSize">
+                                <option value="A4" selected>A4</option>
+                                <option value="A3">A3</option>
+                                <option value="Letter">Letter</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="orientation">页面方向：</label>
+                            <select id="orientation">
+                                <option value="portrait" selected>纵向</option>
+                                <option value="landscape">横向</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="print-preview">
+                    <h4>打印预览</h4>
+                    <div class="preview-info">
+                        <span>预计页数：<strong id="estimatedPages">2</strong> 页</span>
+                        <span>打印份数：<input type="number" id="printCopies" value="1" min="1" max="100"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePrintModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmPrint()">
+                    <i class="fas fa-print"></i>
+                    开始打印
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载遮罩 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>正在加载试卷内容...</p>
+        </div>
+    </div>
+
+    <script src="papers-preview.js"></script>
+</body>
+</html>

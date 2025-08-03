@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人工复核 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="grading-tasks.css">
+    <link rel="stylesheet" href="grading-review.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item active">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-clipboard-check"></i>
+                阅卷中心
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/grading/tasks" class="sidebar-nav-item">
+                <i class="fas fa-tasks"></i>
+                <span>阅卷任务</span>
+            </a>
+            <a href="/grading/upload" class="sidebar-nav-item">
+                <i class="fas fa-upload"></i>
+                <span>上传答卷</span>
+            </a>
+            <a href="/grading/review" class="sidebar-nav-item active">
+                <i class="fas fa-user-check"></i>
+                <span>人工复核</span>
+            </a>
+            <a href="/grading/history" class="sidebar-nav-item">
+                <i class="fas fa-history"></i>
+                <span>历史记录</span>
+            </a>
+        </nav>
+
+        <!-- 复核统计 -->
+        <div class="sidebar-stats">
+            <h3>复核统计</h3>
+            <div class="stat-card-mini">
+                <div class="stat-icon pending">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">待复核</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon processing">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">复核中</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon completed">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">已完成</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速筛选 -->
+        <div class="sidebar-filters">
+            <h3>筛选条件</h3>
+            <div class="filter-group">
+                <label class="filter-item">
+                    <input type="checkbox" checked>
+                    <span class="checkmark"></span>
+                    <span>低置信度</span>
+                </label>
+                <label class="filter-item">
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                    <span>人工标记</span>
+                </label>
+                <label class="filter-item">
+                    <input type="checkbox" checked>
+                    <span class="checkmark"></span>
+                    <span>疑难题目</span>
+                </label>
+                <label class="filter-item">
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                    <span>争议评分</span>
+                </label>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>阅卷中心</span>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">人工复核</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>人工复核</h1>
+                <div class="header-subtitle">
+                    审核AI评分结果，调整置信度较低或需要人工判断的题目
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    导出结果
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-cog"></i>
+                    复核设置
+                </button>
+            </div>
+        </div>
+
+        <!-- 复核概览 -->
+        <div class="review-overview">
+            <div class="overview-card">
+                <div class="overview-icon pending">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="overview-info">
+                    <div class="overview-number">15</div>
+                    <div class="overview-label">待复核题目</div>
+                    <div class="overview-desc">置信度 < 70%</div>
+                </div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-icon processing">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="overview-info">
+                    <div class="overview-number">8</div>
+                    <div class="overview-label">复核中</div>
+                    <div class="overview-desc">正在人工审核</div>
+                </div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-icon completed">
+                    <i class="fas fa-check-double"></i>
+                </div>
+                <div class="overview-info">
+                    <div class="overview-number">42</div>
+                    <div class="overview-label">已完成</div>
+                    <div class="overview-desc">复核完成</div>
+                </div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-icon accuracy">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <div class="overview-info">
+                    <div class="overview-number">89%</div>
+                    <div class="overview-label">准确率</div>
+                    <div class="overview-desc">AI vs 人工</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 筛选和操作栏 -->
+        <div class="filter-toolbar">
+            <div class="filter-left">
+                <div class="status-filters">
+                    <button class="status-filter active" data-status="all">
+                        <span>全部</span>
+                        <span class="count">65</span>
+                    </button>
+                    <button class="status-filter" data-status="pending">
+                        <span>待复核</span>
+                        <span class="count">15</span>
+                    </button>
+                    <button class="status-filter" data-status="reviewing">
+                        <span>复核中</span>
+                        <span class="count">8</span>
+                    </button>
+                    <button class="status-filter" data-status="completed">
+                        <span>已完成</span>
+                        <span class="count">42</span>
+                    </button>
+                </div>
+            </div>
+            <div class="filter-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索学生姓名或题目...">
+                </div>
+                <select class="filter-select">
+                    <option value="">全部学科</option>
+                    <option value="math">数学</option>
+                    <option value="english">英语</option>
+                </select>
+                <select class="filter-select">
+                    <option value="">全部班级</option>
+                    <option value="class1">高一(1)班</option>
+                    <option value="class2">高一(2)班</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 复核列表 -->
+        <div class="review-list">
+            <!-- 待复核项目 -->
+            <div class="review-item pending">
+                <div class="review-header">
+                    <div class="item-info">
+                        <h3>张三 - 第15题解答题</h3>
+                        <div class="item-meta">
+                            <span class="paper-name">
+                                <i class="fas fa-file-alt"></i>
+                                高一数学月考
+                            </span>
+                            <span class="class-name">
+                                <i class="fas fa-users"></i>
+                                高一(1)班
+                            </span>
+                            <span class="question-score">
+                                <i class="fas fa-calculator"></i>
+                                15分
+                            </span>
+                            <span class="ai-time">
+                                <i class="fas fa-clock"></i>
+                                AI评分：2分钟前
+                            </span>
+                        </div>
+                    </div>
+                    <div class="item-status">
+                        <div class="confidence-badge low">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            置信度 45%
+                        </div>
+                        <div class="priority-badge high">
+                            <i class="fas fa-flag"></i>
+                            高优先级
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-content">
+                    <div class="ai-result">
+                        <div class="result-header">
+                            <h4>AI评分结果</h4>
+                            <div class="ai-score">
+                                <span class="score-value">8</span>
+                                <span class="score-max">/ 15分</span>
+                            </div>
+                        </div>
+                        <div class="result-details">
+                            <div class="score-breakdown">
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">理解题意</span>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" style="width: 80%"></div>
+                                    </div>
+                                    <span class="breakdown-score">4/5</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">解题过程</span>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" style="width: 40%"></div>
+                                    </div>
+                                    <span class="breakdown-score">2/5</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">计算准确</span>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" style="width: 40%"></div>
+                                    </div>
+                                    <span class="breakdown-score">2/5</span>
+                                </div>
+                            </div>
+                            <div class="ai-comments">
+                                <div class="comment-item positive">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>学生正确理解题目要求，建立了恰当的数学模型</span>
+                                </div>
+                                <div class="comment-item negative">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>求解过程中存在计算错误，导致最终答案偏差</span>
+                                </div>
+                                <div class="comment-item warning">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span>解题步骤不够完整，缺少必要的推理过程</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="answer-preview">
+                        <div class="preview-header">
+                            <h4>学生答卷</h4>
+                            <div class="preview-tools">
+                                <button class="tool-btn" title="放大">
+                                    <i class="fas fa-search-plus"></i>
+                                </button>
+                                <button class="tool-btn" title="旋转">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button class="tool-btn" title="全屏">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="answer-image">
+                            <img src="https://via.placeholder.com/300x400/f8f9fa/6c757d?text=学生答案" alt="学生答案">
+                            <div class="highlight-regions">
+                                <div class="highlight-region" style="top: 20%; left: 10%; width: 80%; height: 30%;">
+                                    <div class="region-label">步骤1</div>
+                                </div>
+                                <div class="highlight-region error" style="top: 55%; left: 15%; width: 70%; height: 20%;">
+                                    <div class="region-label">错误计算</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reference-answer">
+                        <div class="reference-header">
+                            <h4>标准答案</h4>
+                            <button class="btn btn-secondary btn-sm">
+                                <i class="fas fa-eye"></i>
+                                查看详细
+                            </button>
+                        </div>
+                        <div class="answer-steps">
+                            <div class="step-item">
+                                <span class="step-number">1</span>
+                                <div class="step-content">
+                                    <p>建立坐标系，设置参数...</p>
+                                    <div class="step-score">5分</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <span class="step-number">2</span>
+                                <div class="step-content">
+                                    <p>根据题意列出方程组...</p>
+                                    <div class="step-score">5分</div>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <span class="step-number">3</span>
+                                <div class="step-content">
+                                    <p>求解方程得出最终答案</p>
+                                    <div class="step-score">5分</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-actions">
+                    <div class="manual-score">
+                        <label>人工评分</label>
+                        <div class="score-input-group">
+                            <input type="number" class="score-input" value="8" min="0" max="15">
+                            <span class="score-max">/ 15分</span>
+                        </div>
+                    </div>
+                    <div class="review-comments">
+                        <label>复核意见</label>
+                        <textarea class="comment-input" placeholder="请输入复核意见（可选）..."></textarea>
+                    </div>
+                    <div class="review-tags">
+                        <div class="tag-list">
+                            <button class="tag-btn">AI评分合理</button>
+                            <button class="tag-btn active">需要调整</button>
+                            <button class="tag-btn">疑难题目</button>
+                            <button class="tag-btn">学生答案不清晰</button>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-success">
+                            <i class="fas fa-check"></i>
+                            确认评分
+                        </button>
+                        <button class="btn btn-warning">
+                            <i class="fas fa-flag"></i>
+                            标记疑难
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-clock"></i>
+                            稍后处理
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 复核中项目 -->
+            <div class="review-item reviewing">
+                <div class="review-header">
+                    <div class="item-info">
+                        <h3>李四 - 第12题填空题</h3>
+                        <div class="item-meta">
+                            <span class="paper-name">
+                                <i class="fas fa-file-alt"></i>
+                                高一数学月考
+                            </span>
+                            <span class="class-name">
+                                <i class="fas fa-users"></i>
+                                高一(1)班
+                            </span>
+                            <span class="question-score">
+                                <i class="fas fa-calculator"></i>
+                                6分
+                            </span>
+                            <span class="reviewing-by">
+                                <i class="fas fa-user"></i>
+                                王老师复核中
+                            </span>
+                        </div>
+                    </div>
+                    <div class="item-status">
+                        <div class="confidence-badge medium">
+                            <i class="fas fa-info-circle"></i>
+                            置信度 65%
+                        </div>
+                        <div class="reviewing-badge">
+                            <i class="fas fa-user-check"></i>
+                            复核中
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-content collapsed">
+                    <div class="collapsed-info">
+                        <div class="ai-score-mini">
+                            AI评分: <strong>4/6分</strong>
+                        </div>
+                        <div class="review-time">
+                            开始复核: 5分钟前
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-comments"></i>
+                        协作复核
+                    </button>
+                </div>
+            </div>
+
+            <!-- 已完成项目 -->
+            <div class="review-item completed">
+                <div class="review-header">
+                    <div class="item-info">
+                        <h3>王五 - 第8题选择题</h3>
+                        <div class="item-meta">
+                            <span class="paper-name">
+                                <i class="fas fa-file-alt"></i>
+                                高一数学月考
+                            </span>
+                            <span class="class-name">
+                                <i class="fas fa-users"></i>
+                                高一(1)班
+                            </span>
+                            <span class="question-score">
+                                <i class="fas fa-calculator"></i>
+                                4分
+                            </span>
+                            <span class="completed-time">
+                                <i class="fas fa-check-circle"></i>
+                                10分钟前完成
+                            </span>
+                        </div>
+                    </div>
+                    <div class="item-status">
+                        <div class="score-comparison">
+                            <span class="ai-score">AI: 4分</span>
+                            <i class="fas fa-arrow-right"></i>
+                            <span class="human-score">人工: 4分</span>
+                        </div>
+                        <div class="status-badge completed">
+                            <i class="fas fa-check-double"></i>
+                            已完成
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-content collapsed">
+                    <div class="collapsed-info">
+                        <div class="review-result">
+                            <span class="result-badge agreed">
+                                <i class="fas fa-handshake"></i>
+                                AI评分准确
+                            </span>
+                        </div>
+                        <div class="reviewer-info">
+                            复核人: 张老师
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-history"></i>
+                        复核历史
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 批量操作栏 -->
+        <div class="batch-operations">
+            <div class="batch-info">
+                <span>已选择 <strong>3</strong> 个项目</span>
+            </div>
+            <div class="batch-actions">
+                <button class="btn btn-primary btn-sm">
+                    <i class="fas fa-check"></i>
+                    批量确认
+                </button>
+                <button class="btn btn-warning btn-sm">
+                    <i class="fas fa-flag"></i>
+                    批量标记
+                </button>
+                <button class="btn btn-secondary btn-sm">
+                    <i class="fas fa-download"></i>
+                    导出选中
+                </button>
+            </div>
+        </div>
+
+        <!-- 分页 -->
+        <div class="pagination">
+            <button class="page-btn disabled">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <span class="page-dots">...</span>
+            <button class="page-btn">8</button>
+            <button class="page-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 答卷详情模态框 -->
+    <div class="modal" id="answerDetailModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>答卷详情 - 张三第15题</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-content">
+                    <div class="detail-left">
+                        <div class="answer-image-large">
+                            <img src="https://via.placeholder.com/500x700/f8f9fa/6c757d?text=学生答案详情" alt="学生答案">
+                        </div>
+                    </div>
+                    <div class="detail-right">
+                        <div class="question-info-card">
+                            <h4>题目信息</h4>
+                            <div class="question-content">
+                                <p>解方程组：{2x + 3y = 7, x - y = 1}</p>
+                                <div class="question-meta">
+                                    <span>题型：解答题</span>
+                                    <span>分值：15分</span>
+                                    <span>难度：中等</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-analysis-card">
+                            <h4>AI分析结果</h4>
+                            <div class="analysis-details">
+                                <div class="analysis-item">
+                                    <div class="analysis-label">识别准确度</div>
+                                    <div class="analysis-value">92%</div>
+                                </div>
+                                <div class="analysis-item">
+                                    <div class="analysis-label">解题完整度</div>
+                                    <div class="analysis-value">75%</div>
+                                </div>
+                                <div class="analysis-item">
+                                    <div class="analysis-label">计算准确度</div>
+                                    <div class="analysis-value">60%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="scoring-card">
+                            <h4>评分详情</h4>
+                            <div class="scoring-breakdown">
+                                <div class="score-item">
+                                    <span class="score-desc">方程组建立正确</span>
+                                    <span class="score-points">5/5分</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-desc">求解方法正确</span>
+                                    <span class="score-points">3/5分</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-desc">计算结果正确</span>
+                                    <span class="score-points">0/5分</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary">关闭</button>
+                <button class="btn btn-primary">开始复核</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

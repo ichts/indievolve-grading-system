@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阅卷任务 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="grading-tasks.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item active">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">5</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-clipboard-check"></i>
+                阅卷中心
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/grading/tasks" class="sidebar-nav-item active">
+                <i class="fas fa-tasks"></i>
+                <span>阅卷任务</span>
+            </a>
+            <a href="/grading/upload" class="sidebar-nav-item">
+                <i class="fas fa-upload"></i>
+                <span>上传答卷</span>
+            </a>
+            <a href="/grading/batch" class="sidebar-nav-item">
+                <i class="fas fa-layer-group"></i>
+                <span>批量处理</span>
+            </a>
+            <a href="/grading/history" class="sidebar-nav-item">
+                <i class="fas fa-history"></i>
+                <span>历史记录</span>
+            </a>
+        </nav>
+
+        <!-- 快速统计 -->
+        <div class="sidebar-stats">
+            <h3>今日统计</h3>
+            <div class="stat-card-mini">
+                <div class="stat-icon pending">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">待处理</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon processing">
+                    <i class="fas fa-sync fa-spin"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">进行中</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon completed">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">145</div>
+                    <div class="stat-label">已完成</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快捷操作 -->
+        <div class="sidebar-quick-actions">
+            <h3>快捷操作</h3>
+            <div class="quick-action-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>新建阅卷任务</span>
+            </div>
+            <div class="quick-action-item">
+                <i class="fas fa-upload"></i>
+                <span>批量上传答卷</span>
+            </div>
+            <div class="quick-action-item">
+                <i class="fas fa-robot"></i>
+                <span>启动AI阅卷</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>阅卷中心</span>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">阅卷任务</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>阅卷任务</h1>
+                <div class="header-stats">
+                    <span class="stat-item">
+                        <i class="fas fa-tasks"></i>
+                        总计 <strong>28</strong> 个任务
+                    </span>
+                    <span class="stat-item">
+                        <i class="fas fa-chart-line"></i>
+                        完成率 <strong>85%</strong>
+                    </span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    导出报告
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    新建任务
+                </button>
+            </div>
+        </div>
+
+        <!-- 任务状态筛选和搜索 -->
+        <div class="filter-toolbar">
+            <div class="filter-left">
+                <div class="task-status-filters">
+                    <button class="status-filter active" data-status="all">
+                        全部任务 <span class="count">28</span>
+                    </button>
+                    <button class="status-filter" data-status="pending">
+                        待处理 <span class="count">12</span>
+                    </button>
+                    <button class="status-filter" data-status="processing">
+                        进行中 <span class="count">8</span>
+                    </button>
+                    <button class="status-filter" data-status="completed">
+                        已完成 <span class="count">8</span>
+                    </button>
+                </div>
+                
+                <div class="filter-group">
+                    <label>学科：</label>
+                    <select class="filter-select">
+                        <option value="">全部学科</option>
+                        <option value="math">数学</option>
+                        <option value="english">英语</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>班级：</label>
+                    <select class="filter-select">
+                        <option value="">全部班级</option>
+                        <option value="class1">高一(1)班</option>
+                        <option value="class2">高一(2)班</option>
+                        <option value="class3">高一(3)班</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索任务名称、试卷名称...">
+                </div>
+                
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button class="view-btn" data-view="grid">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 任务列表 -->
+        <div class="tasks-container">
+            <!-- 列表视图 -->
+            <div class="tasks-list-view">
+                <!-- 任务项 1 -->
+                <div class="task-card processing">
+                    <div class="task-header">
+                        <div class="task-info">
+                            <h3 class="task-title">高一数学月考 - 高一(1)班</h3>
+                            <div class="task-meta">
+                                <span class="task-paper">
+                                    <i class="fas fa-file-alt"></i>
+                                    高一数学第一次月考试卷
+                                </span>
+                                <span class="task-class">
+                                    <i class="fas fa-users"></i>
+                                    高一(1)班 · 45人
+                                </span>
+                                <span class="task-time">
+                                    <i class="fas fa-clock"></i>
+                                    2025-01-15 14:30
+                                </span>
+                            </div>
+                        </div>
+                        <div class="task-status">
+                            <span class="status-badge processing">
+                                <i class="fas fa-sync fa-spin"></i>
+                                AI阅卷中
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="task-progress">
+                        <div class="progress-info">
+                            <span class="progress-text">阅卷进度：35/45 (78%)</span>
+                            <span class="progress-time">预计剩余：12分钟</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-details">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">答卷数量</span>
+                                <span class="detail-value">45份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">AI评分</span>
+                                <span class="detail-value">35份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">待复核</span>
+                                <span class="detail-value warning">8份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">已完成</span>
+                                <span class="detail-value success">27份</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-actions">
+                        <button class="btn btn-secondary btn-sm">
+                            <i class="fas fa-pause"></i>
+                            暂停
+                        </button>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye"></i>
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 任务项 2 -->
+                <div class="task-card pending">
+                    <div class="task-header">
+                        <div class="task-info">
+                            <h3 class="task-title">英语听力测试 - 高一(2)班</h3>
+                            <div class="task-meta">
+                                <span class="task-paper">
+                                    <i class="fas fa-file-alt"></i>
+                                    英语听力理解专项练习
+                                </span>
+                                <span class="task-class">
+                                    <i class="fas fa-users"></i>
+                                    高一(2)班 · 42人
+                                </span>
+                                <span class="task-time">
+                                    <i class="fas fa-clock"></i>
+                                    2025-01-15 16:00
+                                </span>
+                            </div>
+                        </div>
+                        <div class="task-status">
+                            <span class="status-badge pending">
+                                <i class="fas fa-hourglass-half"></i>
+                                等待开始
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="task-progress">
+                        <div class="progress-info">
+                            <span class="progress-text">阅卷进度：0/42 (0%)</span>
+                            <span class="progress-time">等待开始</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-details">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">答卷数量</span>
+                                <span class="detail-value">42份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">AI评分</span>
+                                <span class="detail-value">0份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">待复核</span>
+                                <span class="detail-value">0份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">已完成</span>
+                                <span class="detail-value">0份</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-actions">
+                        <button class="btn btn-secondary btn-sm">
+                            <i class="fas fa-cog"></i>
+                            设置
+                        </button>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-play"></i>
+                            开始阅卷
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 任务项 3 -->
+                <div class="task-card completed">
+                    <div class="task-header">
+                        <div class="task-info">
+                            <h3 class="task-title">数学函数专题 - 高一(3)班</h3>
+                            <div class="task-meta">
+                                <span class="task-paper">
+                                    <i class="fas fa-file-alt"></i>
+                                    一次函数与二次函数综合练习
+                                </span>
+                                <span class="task-class">
+                                    <i class="fas fa-users"></i>
+                                    高一(3)班 · 46人
+                                </span>
+                                <span class="task-time">
+                                    <i class="fas fa-clock"></i>
+                                    2025-01-14 09:30
+                                </span>
+                            </div>
+                        </div>
+                        <div class="task-status">
+                            <span class="status-badge completed">
+                                <i class="fas fa-check-circle"></i>
+                                已完成
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="task-progress">
+                        <div class="progress-info">
+                            <span class="progress-text">阅卷进度：46/46 (100%)</span>
+                            <span class="progress-time">用时：18分钟</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill completed" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-details">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">答卷数量</span>
+                                <span class="detail-value">46份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">AI评分</span>
+                                <span class="detail-value success">43份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">人工复核</span>
+                                <span class="detail-value">3份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">平均分</span>
+                                <span class="detail-value">82.5分</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-actions">
+                        <button class="btn btn-secondary btn-sm">
+                            <i class="fas fa-download"></i>
+                            下载结果
+                        </button>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-chart-bar"></i>
+                            查看分析
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 任务项 4 - 需要复核 -->
+                <div class="task-card review-needed">
+                    <div class="task-header">
+                        <div class="task-info">
+                            <h3 class="task-title">英语作文练习 - 高一(1)班</h3>
+                            <div class="task-meta">
+                                <span class="task-paper">
+                                    <i class="fas fa-file-alt"></i>
+                                    My Dream Job 主题作文
+                                </span>
+                                <span class="task-class">
+                                    <i class="fas fa-users"></i>
+                                    高一(1)班 · 45人
+                                </span>
+                                <span class="task-time">
+                                    <i class="fas fa-clock"></i>
+                                    2025-01-13 15:45
+                                </span>
+                            </div>
+                        </div>
+                        <div class="task-status">
+                            <span class="status-badge review-needed">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                需要复核
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="task-progress">
+                        <div class="progress-info">
+                            <span class="progress-text">阅卷进度：45/45 (100%)</span>
+                            <span class="progress-time">待复核：15份</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill review" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-details">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">答卷数量</span>
+                                <span class="detail-value">45份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">AI评分</span>
+                                <span class="detail-value">30份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">待复核</span>
+                                <span class="detail-value warning">15份</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">置信度</span>
+                                <span class="detail-value">67%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="task-actions">
+                        <button class="btn btn-secondary btn-sm">
+                            <i class="fas fa-list"></i>
+                            查看详情
+                        </button>
+                        <button class="btn btn-warning btn-sm">
+                            <i class="fas fa-user-check"></i>
+                            开始复核
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 空状态 -->
+            <div class="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <h3>暂无阅卷任务</h3>
+                <p>还没有创建任何阅卷任务，点击下方按钮开始创建</p>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    创建第一个阅卷任务
+                </button>
+            </div>
+        </div>
+
+        <!-- 分页组件 -->
+        <div class="pagination-container">
+            <div class="pagination-info">
+                显示第 1-10 条，共 28 条记录
+            </div>
+            <div class="pagination">
+                <button class="page-btn" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                    上一页
+                </button>
+                <div class="page-numbers">
+                    <button class="page-number active">1</button>
+                    <button class="page-number">2</button>
+                    <button class="page-number">3</button>
+                </div>
+                <button class="page-btn">
+                    下一页
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="page-size-selector">
+                每页显示：
+                <select>
+                    <option value="10">10条</option>
+                    <option value="20">20条</option>
+                    <option value="50">50条</option>
+                </select>
+            </div>
+        </div>
+    </main>
+
+    <!-- 任务详情模态框 -->
+    <div class="modal" id="taskDetailModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>任务详情</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="task-detail-tabs">
+                    <button class="tab-btn active" data-tab="overview">概览</button>
+                    <button class="tab-btn" data-tab="progress">进度</button>
+                    <button class="tab-btn" data-tab="students">学生</button>
+                    <button class="tab-btn" data-tab="errors">异常</button>
+                </div>
+                <div class="task-detail-content">
+                    <!-- 详情内容将动态加载 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary">关闭</button>
+                <button class="btn btn-primary">进入工作台</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

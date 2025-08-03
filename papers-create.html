@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建试卷 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="papers-create.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item active">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-file-alt"></i>
+                试卷管理
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/papers/list" class="sidebar-nav-item">
+                <i class="fas fa-list"></i>
+                <span>试卷列表</span>
+            </a>
+            <a href="/papers/create" class="sidebar-nav-item active">
+                <i class="fas fa-plus-circle"></i>
+                <span>创建试卷</span>
+            </a>
+            <a href="/papers/templates" class="sidebar-nav-item">
+                <i class="fas fa-layer-group"></i>
+                <span>模板管理</span>
+            </a>
+            <a href="/papers/archived" class="sidebar-nav-item">
+                <i class="fas fa-archive"></i>
+                <span>已归档</span>
+            </a>
+        </nav>
+
+        <!-- 创建进度 -->
+        <div class="sidebar-progress">
+            <h3>创建进度</h3>
+            <div class="progress-steps">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <span>基本信息</span>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <span>题目配置</span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <span>预览确认</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模板选择 -->
+        <div class="sidebar-templates">
+            <h3>选择模板</h3>
+            <div class="template-item" onclick="loadTemplate('math-basic')">
+                <i class="fas fa-calculator"></i>
+                <span>数学基础模板</span>
+            </div>
+            <div class="template-item" onclick="loadTemplate('english-basic')">
+                <i class="fas fa-language"></i>
+                <span>英语基础模板</span>
+            </div>
+            <div class="template-item" onclick="loadTemplate('empty')">
+                <i class="fas fa-file"></i>
+                <span>空白模板</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>试卷管理</span>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">创建试卷</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>创建试卷</h1>
+                <div class="header-subtitle">
+                    设计专业的数学或英语试卷，支持多种题型和智能评分标准
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="saveDraft()">
+                    <i class="fas fa-save"></i>
+                    保存草稿
+                </button>
+                <button class="btn btn-secondary" onclick="previewPaper()">
+                    <i class="fas fa-eye"></i>
+                    预览试卷
+                </button>
+                <button class="btn btn-primary" onclick="publishPaper()">
+                    <i class="fas fa-check"></i>
+                    保存发布
+                </button>
+            </div>
+        </div>
+
+        <!-- 试卷创建主体内容 -->
+        <div class="create-container">
+            <!-- 左侧编辑区域 -->
+            <div class="edit-section">
+                <!-- 基本信息区 -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-info-circle"></i>
+                            基本信息
+                        </h2>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="toggleCard('info-card')" title="展开/收起">
+                                <i class="fas fa-chevron-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="paperName" class="required">试卷名称</label>
+                                <input type="text" id="paperName" class="form-input" placeholder="请输入试卷名称">
+                                <div class="input-hint">建议包含年级、学科、考试类型等信息</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject" class="required">学科</label>
+                                <select id="subject" class="form-select" onchange="handleSubjectChange()">
+                                    <option value="">请选择学科</option>
+                                    <option value="math">数学</option>
+                                    <option value="english">英语</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="duration">考试时长</label>
+                                <div class="input-group">
+                                    <input type="number" id="duration" class="form-input" placeholder="120" min="30" max="300">
+                                    <span class="input-addon">分钟</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="totalScore">总分</label>
+                                <div class="input-group">
+                                    <input type="number" id="totalScore" class="form-input" placeholder="100" min="50" max="200" readonly>
+                                    <span class="input-addon">分</span>
+                                </div>
+                                <div class="input-hint">将根据题目分值自动计算</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="difficulty">难度等级</label>
+                                <select id="difficulty" class="form-select">
+                                    <option value="easy">简单</option>
+                                    <option value="medium" selected>中等</option>
+                                    <option value="hard">困难</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tags">标签</label>
+                                <input type="text" id="tags" class="form-input" placeholder="用逗号分隔多个标签">
+                                <div class="input-hint">如：月考,函数,期中考试</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="description">试卷描述</label>
+                            <textarea id="description" class="form-textarea" rows="3" placeholder="请输入试卷描述，包括考试范围、重点内容等"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 题目配置区 -->
+                <div class="questions-card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-list-ol"></i>
+                            题目配置
+                            <span class="question-count">(共 <span id="questionCount">0</span> 题)</span>
+                        </h2>
+                        <div class="card-actions">
+                            <div class="question-type-selector">
+                                <select id="questionType" class="form-select">
+                                    <option value="">选择题目类型</option>
+                                    <option value="choice">单选题</option>
+                                    <option value="multiple">多选题</option>
+                                    <option value="fill">填空题</option>
+                                    <option value="short">简答题</option>
+                                    <option value="essay">解答题</option>
+                                    <option value="composition">作文题</option>
+                                </select>
+                                <button class="btn btn-primary btn-sm" onclick="addQuestion()">
+                                    <i class="fas fa-plus"></i>
+                                    添加题目
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <!-- 题目列表 -->
+                        <div class="questions-list" id="questionsList">
+                            <div class="empty-questions">
+                                <div class="empty-icon">
+                                    <i class="fas fa-plus-circle"></i>
+                                </div>
+                                <h3>还没有添加题目</h3>
+                                <p>选择题目类型并点击"添加题目"开始创建</p>
+                            </div>
+                        </div>
+                        
+                        <!-- 批量操作 -->
+                        <div class="batch-operations" id="batchOperations" style="display: none;">
+                            <div class="batch-info">
+                                <input type="checkbox" id="selectAllQuestions" onchange="toggleSelectAllQuestions()">
+                                <label for="selectAllQuestions">全选</label>
+                                <span class="selected-info">已选中 <span id="selectedQuestionCount">0</span> 题</span>
+                            </div>
+                            <div class="batch-actions">
+                                <button class="btn btn-secondary btn-sm" onclick="batchSetScore()">
+                                    <i class="fas fa-calculator"></i>
+                                    批量设分值
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="batchDelete()">
+                                    <i class="fas fa-trash"></i>
+                                    批量删除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 评分标准区 -->
+                <div class="scoring-card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-chart-bar"></i>
+                            评分标准
+                        </h2>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="toggleCard('scoring-card')" title="展开/收起">
+                                <i class="fas fa-chevron-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="scoring-settings">
+                            <div class="scoring-section">
+                                <h3>AI评分设置</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>评分严格度</label>
+                                        <div class="radio-group">
+                                            <label class="radio-item">
+                                                <input type="radio" name="strictness" value="loose">
+                                                <span>宽松</span>
+                                            </label>
+                                            <label class="radio-item">
+                                                <input type="radio" name="strictness" value="normal" checked>
+                                                <span>正常</span>
+                                            </label>
+                                            <label class="radio-item">
+                                                <input type="radio" name="strictness" value="strict">
+                                                <span>严格</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>人工复核阈值</label>
+                                        <div class="input-group">
+                                            <input type="range" id="reviewThreshold" min="0" max="100" value="70" oninput="updateThresholdValue()">
+                                            <span class="threshold-value" id="thresholdValue">70%</span>
+                                        </div>
+                                        <div class="input-hint">置信度低于此值的题目将进入人工复核</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="scoring-section" id="mathScoringSection" style="display: none;">
+                                <h3>数学评分细则</h3>
+                                <div class="scoring-rules">
+                                    <div class="rule-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            解题步骤完整性 (30%)
+                                        </label>
+                                    </div>
+                                    <div class="rule-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            计算准确性 (40%)
+                                        </label>
+                                    </div>
+                                    <div class="rule-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            答案正确性 (30%)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="scoring-section" id="englishScoringSection" style="display: none;">
+                                <h3>英语评分细则</h3>
+                                <div class="scoring-rules">
+                                    <div class="rule-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            语法准确性 (25%)
+                                        </label>
+                                    </div>
+                                    <div class="rule-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            词汇丰富度 (25%)
+                                        </label>
+                                    </div>
+                                    <div class="rule-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            内容相关性 (25%)
+                                        </label>
+                                    </div>
+                                    <div class="rule-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            表达流畅度 (25%)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧预览区域 -->
+            <div class="preview-section">
+                <div class="preview-card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-eye"></i>
+                            实时预览
+                        </h2>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="refreshPreview()" title="刷新预览">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                            <button class="btn-icon" onclick="togglePreviewSize()" title="全屏预览">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="preview-container" id="previewContainer">
+                            <div class="preview-header">
+                                <h1 id="previewTitle">试卷标题</h1>
+                                <div class="preview-meta">
+                                    <span class="preview-subject" id="previewSubject">学科：未选择</span>
+                                    <span class="preview-duration" id="previewDuration">时长：-- 分钟</span>
+                                    <span class="preview-score" id="previewScore">总分：-- 分</span>
+                                </div>
+                            </div>
+                            
+                            <div class="preview-content" id="previewContent">
+                                <div class="preview-placeholder">
+                                    <i class="fas fa-file-alt"></i>
+                                    <p>填写基本信息和添加题目后，预览将在此显示</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 操作快捷键 -->
+                <div class="shortcuts-card">
+                    <div class="card-header">
+                        <h3>
+                            <i class="fas fa-keyboard"></i>
+                            快捷键
+                        </h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="shortcut-list">
+                            <div class="shortcut-item">
+                                <kbd>Ctrl</kbd> + <kbd>S</kbd>
+                                <span>保存草稿</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Ctrl</kbd> + <kbd>P</kbd>
+                                <span>预览试卷</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
+                                <span>保存发布</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <kbd>Alt</kbd> + <kbd>A</kbd>
+                                <span>添加题目</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 题目编辑模态框 -->
+    <div class="modal" id="questionModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="questionModalTitle">添加题目</h3>
+                <button class="modal-close" onclick="closeQuestionModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="questionModalBody">
+                <!-- 题目编辑内容将动态加载 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeQuestionModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveQuestion()">保存题目</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批量设分值模态框 -->
+    <div class="modal" id="batchScoreModal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3>批量设置分值</h3>
+                <button class="modal-close" onclick="closeBatchScoreModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="batchScore">分值</label>
+                    <input type="number" id="batchScore" class="form-input" placeholder="请输入分值" min="1" max="50">
+                </div>
+                <div class="selected-questions-preview">
+                    <p>将为以下 <span id="batchQuestionCount">0</span> 道题目设置分值：</p>
+                    <div id="batchQuestionsList"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeBatchScoreModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmBatchScore()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading 遮罩 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>正在保存试卷...</p>
+        </div>
+    </div>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="papers-create.js"></script>
+</body>
+</html>

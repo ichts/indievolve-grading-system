@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能阅卷系统 - 工作台</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <h1>工作台首页</h1>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="createNewPaper()">
+                    <i class="fas fa-plus"></i>
+                    创建试卷
+                </button>
+                <button class="btn btn-secondary" onclick="uploadAnswers()">
+                    <i class="fas fa-upload"></i>
+                    上传答卷
+                </button>
+            </div>
+        </div>
+
+        <!-- 数据概览卡片区域 -->
+        <div class="overview-cards">
+            <div class="stat-card">
+                <div class="card-icon pending">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="card-content">
+                    <h3>待阅卷</h3>
+                    <div class="stat-number">245</div>
+                    <div class="stat-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 35%"></div>
+                        </div>
+                        <span class="progress-text">已完成 35%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="card-icon completed">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="card-content">
+                    <h3>本月完成</h3>
+                    <div class="stat-number">1,234</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+15.3%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="card-icon average">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="card-content">
+                    <h3>班级平均分</h3>
+                    <div class="stat-number">82.5</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+2.8分</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="card-icon users">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="card-content">
+                    <h3>学生总数</h3>
+                    <div class="stat-number">156</div>
+                    <div class="stat-subtitle">3个班级</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容网格 -->
+        <div class="content-grid">
+            <!-- 左侧内容 -->
+            <div class="left-section">
+                <!-- 快捷操作区 -->
+                <div class="quick-actions-section">
+                    <h2>快捷操作</h2>
+                    <div class="quick-actions">
+                        <div class="action-card" onclick="createNewPaper()">
+                            <div class="action-icon">
+                                <i class="fas fa-file-plus"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>创建新试卷</h4>
+                                <p>创建数学或英语试卷模板</p>
+                            </div>
+                        </div>
+
+                        <div class="action-card" onclick="uploadAnswers()">
+                            <div class="action-icon">
+                                <i class="fas fa-upload"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>上传答卷</h4>
+                                <p>批量上传学生答卷图片</p>
+                            </div>
+                        </div>
+
+                        <div class="action-card" onclick="viewReports()">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>查看最新报告</h4>
+                                <p>学情分析和成绩报告</p>
+                            </div>
+                        </div>
+
+                        <div class="action-card" onclick="manageClasses()">
+                            <div class="action-icon">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>班级管理</h4>
+                                <p>管理学生信息和班级设置</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据图表区域 -->
+                <div class="charts-section">
+                    <h2>数据分析</h2>
+                    <div class="charts-container">
+                        <!-- 成绩分布图 -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>成绩分布情况</h3>
+                                <div class="chart-controls">
+                                    <select class="chart-filter">
+                                        <option>本月数据</option>
+                                        <option>本学期</option>
+                                        <option>本学年</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-content">
+                                <canvas id="scoreDistributionChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- 学科对比图 -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>学科对比分析</h3>
+                            </div>
+                            <div class="chart-content">
+                                <canvas id="subjectComparisonChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧内容 -->
+            <div class="right-section">
+                <!-- 近期动态 -->
+                <div class="recent-activities">
+                    <h2>近期动态</h2>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>数学月考阅卷完成</h4>
+                                <p>高一(1)班 - 45份答卷已全部评分</p>
+                                <span class="activity-time">2小时前</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon processing">
+                                <i class="fas fa-sync fa-spin"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>英语作文批改中</h4>
+                                <p>高一(2)班 - 进度 28/42</p>
+                                <span class="activity-time">正在进行</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon new">
+                                <i class="fas fa-upload"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>新上传答卷等待处理</h4>
+                                <p>高一(3)班 - 数学练习卷</p>
+                                <span class="activity-time">1小时前</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon report">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>学情分析报告已生成</h4>
+                                <p>第三次月考综合分析</p>
+                                <span class="activity-time">昨天</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="activity-more">
+                        <a href="/activities" class="link">查看全部动态 <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- 系统通知 -->
+                <div class="system-notifications">
+                    <h2>系统通知</h2>
+                    <div class="notification-list">
+                        <div class="notification-item urgent">
+                            <div class="notification-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="notification-content">
+                                <h4>系统维护通知</h4>
+                                <p>今晚23:00-24:00进行系统升级</p>
+                                <span class="notification-time">今天</span>
+                            </div>
+                        </div>
+
+                        <div class="notification-item info">
+                            <div class="notification-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="notification-content">
+                                <h4>新功能上线</h4>
+                                <p>AI阅卷准确率提升至95%</p>
+                                <span class="notification-time">3天前</span>
+                            </div>
+                        </div>
+
+                        <div class="notification-item success">
+                            <div class="notification-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="notification-content">
+                                <h4>数据备份完成</h4>
+                                <p>所有数据已安全备份</p>
+                                <span class="notification-time">1周前</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 月度趋势图 -->
+                <div class="trend-chart">
+                    <h2>月度成绩趋势</h2>
+                    <div class="trend-content">
+                        <canvas id="monthlyTrendChart" width="300" height="150"></canvas>
+                    </div>
+                    <div class="trend-summary">
+                        <div class="trend-item">
+                            <span class="trend-label">数学</span>
+                            <span class="trend-value positive">+3.2%</span>
+                        </div>
+                        <div class="trend-item">
+                            <span class="trend-label">英语</span>
+                            <span class="trend-value positive">+1.8%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

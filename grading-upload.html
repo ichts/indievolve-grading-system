@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上传答卷 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="grading-tasks.css">
+    <link rel="stylesheet" href="grading-upload.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item active">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-clipboard-check"></i>
+                阅卷中心
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/grading/tasks" class="sidebar-nav-item">
+                <i class="fas fa-tasks"></i>
+                <span>阅卷任务</span>
+            </a>
+            <a href="/grading/upload" class="sidebar-nav-item active">
+                <i class="fas fa-upload"></i>
+                <span>上传答卷</span>
+            </a>
+            <a href="/grading/batch" class="sidebar-nav-item">
+                <i class="fas fa-layer-group"></i>
+                <span>批量处理</span>
+            </a>
+            <a href="/grading/history" class="sidebar-nav-item">
+                <i class="fas fa-history"></i>
+                <span>历史记录</span>
+            </a>
+        </nav>
+
+        <!-- 上传进度 -->
+        <div class="sidebar-progress">
+            <h3>上传进度</h3>
+            <div class="progress-steps">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <span>选择试卷</span>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <span>选择班级</span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <span>上传答卷</span>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-number">4</div>
+                    <span>确认信息</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 上传提示 -->
+        <div class="sidebar-tips">
+            <h3>上传提示</h3>
+            <div class="tip-item">
+                <i class="fas fa-lightbulb"></i>
+                <span>支持JPG、PNG格式图片</span>
+            </div>
+            <div class="tip-item">
+                <i class="fas fa-lightbulb"></i>
+                <span>单张图片不超过10MB</span>
+            </div>
+            <div class="tip-item">
+                <i class="fas fa-lightbulb"></i>
+                <span>建议分辨率300DPI以上</span>
+            </div>
+            <div class="tip-item">
+                <i class="fas fa-lightbulb"></i>
+                <span>保持答卷图片清晰完整</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>阅卷中心</span>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">上传答卷</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>上传答卷</h1>
+                <div class="header-subtitle">
+                    按照步骤引导上传学生答卷，系统将自动识别并开始AI阅卷
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-history"></i>
+                    历史记录
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-question-circle"></i>
+                    上传帮助
+                </button>
+            </div>
+        </div>
+
+        <!-- 上传向导 -->
+        <div class="upload-wizard">
+            <!-- 步骤1：选择试卷 -->
+            <div class="wizard-step active" id="step1">
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-info">
+                            <h2>
+                                <span class="step-badge">1</span>
+                                选择试卷模板
+                            </h2>
+                            <p>选择要阅卷的试卷模板，系统将根据模板配置进行智能识别</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="paper-selection">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="搜索试卷名称...">
+                            </div>
+                            
+                            <div class="paper-filters">
+                                <select class="filter-select">
+                                    <option value="">全部学科</option>
+                                    <option value="math">数学</option>
+                                    <option value="english">英语</option>
+                                </select>
+                                <select class="filter-select">
+                                    <option value="">全部状态</option>
+                                    <option value="published">已发布</option>
+                                    <option value="draft">草稿</option>
+                                </select>
+                            </div>
+                            
+                            <div class="paper-list">
+                                <div class="paper-item selected">
+                                    <div class="paper-radio">
+                                        <input type="radio" name="selectedPaper" value="1" checked>
+                                    </div>
+                                    <div class="paper-info">
+                                        <h3>高一数学月考试卷</h3>
+                                        <div class="paper-meta">
+                                            <span class="subject-badge math">数学</span>
+                                            <span><i class="fas fa-list-ol"></i> 25题</span>
+                                            <span><i class="fas fa-calculator"></i> 150分</span>
+                                            <span><i class="fas fa-clock"></i> 120分钟</span>
+                                        </div>
+                                        <p class="paper-desc">涵盖函数、三角函数等核心知识点</p>
+                                    </div>
+                                    <div class="paper-preview">
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                            预览
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item">
+                                    <div class="paper-radio">
+                                        <input type="radio" name="selectedPaper" value="2">
+                                    </div>
+                                    <div class="paper-info">
+                                        <h3>英语听力理解专项练习</h3>
+                                        <div class="paper-meta">
+                                            <span class="subject-badge english">英语</span>
+                                            <span><i class="fas fa-list-ol"></i> 20题</span>
+                                            <span><i class="fas fa-calculator"></i> 100分</span>
+                                            <span><i class="fas fa-clock"></i> 90分钟</span>
+                                        </div>
+                                        <p class="paper-desc">重点训练听力理解和信息提取能力</p>
+                                    </div>
+                                    <div class="paper-preview">
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                            预览
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="paper-item">
+                                    <div class="paper-radio">
+                                        <input type="radio" name="selectedPaper" value="3">
+                                    </div>
+                                    <div class="paper-info">
+                                        <h3>三角函数综合测试</h3>
+                                        <div class="paper-meta">
+                                            <span class="subject-badge math">数学</span>
+                                            <span><i class="fas fa-list-ol"></i> 18题</span>
+                                            <span><i class="fas fa-calculator"></i> 120分</span>
+                                            <span><i class="fas fa-clock"></i> 100分钟</span>
+                                        </div>
+                                        <p class="paper-desc">正弦、余弦、正切函数的综合应用</p>
+                                    </div>
+                                    <div class="paper-preview">
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                            预览
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="btn btn-primary" disabled>
+                            下一步：选择班级
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤2：选择班级 -->
+            <div class="wizard-step" id="step2">
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-info">
+                            <h2>
+                                <span class="step-badge">2</span>
+                                选择班级学生
+                            </h2>
+                            <p>选择参加考试的班级和学生，系统将根据学生名单识别答卷</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="class-selection">
+                            <div class="class-list">
+                                <div class="class-item selected">
+                                    <div class="class-checkbox">
+                                        <input type="checkbox" id="class1" checked>
+                                        <label for="class1"></label>
+                                    </div>
+                                    <div class="class-info">
+                                        <h3>高一(1)班</h3>
+                                        <div class="class-meta">
+                                            <span><i class="fas fa-users"></i> 45人</span>
+                                            <span><i class="fas fa-user-tie"></i> 李老师</span>
+                                        </div>
+                                    </div>
+                                    <div class="student-count">45名学生</div>
+                                </div>
+                                
+                                <div class="class-item">
+                                    <div class="class-checkbox">
+                                        <input type="checkbox" id="class2">
+                                        <label for="class2"></label>
+                                    </div>
+                                    <div class="class-info">
+                                        <h3>高一(2)班</h3>
+                                        <div class="class-meta">
+                                            <span><i class="fas fa-users"></i> 42人</span>
+                                            <span><i class="fas fa-user-tie"></i> 王老师</span>
+                                        </div>
+                                    </div>
+                                    <div class="student-count">42名学生</div>
+                                </div>
+                                
+                                <div class="class-item">
+                                    <div class="class-checkbox">
+                                        <input type="checkbox" id="class3">
+                                        <label for="class3"></label>
+                                    </div>
+                                    <div class="class-info">
+                                        <h3>高一(3)班</h3>
+                                        <div class="class-meta">
+                                            <span><i class="fas fa-users"></i> 46人</span>
+                                            <span><i class="fas fa-user-tie"></i> 张老师</span>
+                                        </div>
+                                    </div>
+                                    <div class="student-count">46名学生</div>
+                                </div>
+                            </div>
+                            
+                            <div class="student-preview">
+                                <div class="preview-header">
+                                    <h3>已选择学生名单</h3>
+                                    <span class="student-total">共 45 人</span>
+                                </div>
+                                <div class="student-list-preview">
+                                    <div class="student-name">张三</div>
+                                    <div class="student-name">李四</div>
+                                    <div class="student-name">王五</div>
+                                    <div class="student-name">赵六</div>
+                                    <div class="student-name">钱七</div>
+                                    <div class="student-more">... 还有40人</div>
+                                </div>
+                                <button class="btn-link">查看完整名单</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-chevron-left"></i>
+                            上一步
+                        </button>
+                        <button class="btn btn-primary">
+                            下一步：上传答卷
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤3：上传答卷 -->
+            <div class="wizard-step" id="step3">
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-info">
+                            <h2>
+                                <span class="step-badge">3</span>
+                                上传答卷图片
+                            </h2>
+                            <p>拖拽或点击上传答卷图片，支持批量上传，系统将自动识别学生信息</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="upload-area">
+                            <div class="drop-zone" id="dropZone">
+                                <div class="drop-zone-content">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <h3>拖拽文件到此处上传</h3>
+                                    <p>或点击选择文件</p>
+                                    <div class="upload-formats">
+                                        <span>支持 JPG、PNG 格式</span>
+                                        <span>单个文件不超过 10MB</span>
+                                    </div>
+                                    <input type="file" id="fileInput" multiple accept="image/*" hidden>
+                                    <button class="btn btn-primary btn-upload">
+                                        <i class="fas fa-plus"></i>
+                                        选择文件
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="upload-queue" id="uploadQueue" style="display: none;">
+                                <div class="queue-header">
+                                    <h3>上传队列</h3>
+                                    <div class="queue-actions">
+                                        <button class="btn btn-secondary btn-sm">全部暂停</button>
+                                        <button class="btn btn-secondary btn-sm">清空队列</button>
+                                    </div>
+                                </div>
+                                <div class="file-list">
+                                    <!-- 上传文件项 -->
+                                    <div class="file-item uploading">
+                                        <div class="file-preview">
+                                            <img src="https://via.placeholder.com/60x80" alt="答卷预览">
+                                        </div>
+                                        <div class="file-info">
+                                            <div class="file-name">张三_数学答卷.jpg</div>
+                                            <div class="file-size">2.5 MB</div>
+                                            <div class="upload-progress">
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill" style="width: 65%"></div>
+                                                </div>
+                                                <span class="progress-text">65%</span>
+                                            </div>
+                                        </div>
+                                        <div class="file-status">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                            <span>上传中</span>
+                                        </div>
+                                        <div class="file-actions">
+                                            <button class="btn-icon" title="暂停">
+                                                <i class="fas fa-pause"></i>
+                                            </button>
+                                            <button class="btn-icon" title="删除">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="file-item completed">
+                                        <div class="file-preview">
+                                            <img src="https://via.placeholder.com/60x80" alt="答卷预览">
+                                        </div>
+                                        <div class="file-info">
+                                            <div class="file-name">李四_数学答卷.jpg</div>
+                                            <div class="file-size">3.1 MB</div>
+                                            <div class="recognition-status">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>已识别学生信息</span>
+                                            </div>
+                                        </div>
+                                        <div class="file-status">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>上传完成</span>
+                                        </div>
+                                        <div class="file-actions">
+                                            <button class="btn-icon" title="预览">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon" title="删除">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="file-item error">
+                                        <div class="file-preview">
+                                            <img src="https://via.placeholder.com/60x80" alt="答卷预览">
+                                        </div>
+                                        <div class="file-info">
+                                            <div class="file-name">王五_数学答卷.jpg</div>
+                                            <div class="file-size">1.8 MB</div>
+                                            <div class="error-message">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                                <span>图片质量过低，建议重新上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="file-status">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            <span>上传失败</span>
+                                        </div>
+                                        <div class="file-actions">
+                                            <button class="btn-icon" title="重试">
+                                                <i class="fas fa-redo"></i>
+                                            </button>
+                                            <button class="btn-icon" title="删除">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-summary">
+                            <div class="summary-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">15</span>
+                                    <span class="stat-label">已上传</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">12</span>
+                                    <span class="stat-label">已识别</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">2</span>
+                                    <span class="stat-label">处理中</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">1</span>
+                                    <span class="stat-label">失败</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-chevron-left"></i>
+                            上一步
+                        </button>
+                        <button class="btn btn-primary">
+                            下一步：确认信息
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤4：确认信息 -->
+            <div class="wizard-step" id="step4">
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-info">
+                            <h2>
+                                <span class="step-badge">4</span>
+                                确认信息并开始阅卷
+                            </h2>
+                            <p>确认识别结果和阅卷设置，点击开始进行AI智能阅卷</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="confirmation-tabs">
+                            <button class="tab-btn active" data-tab="overview">概览信息</button>
+                            <button class="tab-btn" data-tab="students">学生识别</button>
+                            <button class="tab-btn" data-tab="settings">阅卷设置</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="overview">
+                            <div class="overview-grid">
+                                <div class="overview-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h3>选择试卷</h3>
+                                        <p>高一数学月考试卷</p>
+                                        <small>25题 · 150分 · 120分钟</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="overview-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h3>参考班级</h3>
+                                        <p>高一(1)班</p>
+                                        <small>45名学生</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="overview-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-images"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h3>上传答卷</h3>
+                                        <p>42份答卷</p>
+                                        <small>3份缺失</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="overview-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <div class="card-info">
+                                        <h3>AI阅卷</h3>
+                                        <p>智能评分模式</p>
+                                        <small>预计用时：15分钟</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="students">
+                            <div class="student-recognition">
+                                <div class="recognition-summary">
+                                    <div class="summary-item success">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>42份已识别</span>
+                                    </div>
+                                    <div class="summary-item warning">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span>3份未上传</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="student-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>学生姓名</th>
+                                                <th>学号</th>
+                                                <th>识别状态</th>
+                                                <th>答卷预览</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="recognized">
+                                                <td>张三</td>
+                                                <td>2025001</td>
+                                                <td>
+                                                    <span class="status-badge success">
+                                                        <i class="fas fa-check"></i>
+                                                        已识别
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div class="answer-preview">
+                                                        <img src="https://via.placeholder.com/40x50" alt="答卷">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn-icon" title="预览">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="recognized">
+                                                <td>李四</td>
+                                                <td>2025002</td>
+                                                <td>
+                                                    <span class="status-badge success">
+                                                        <i class="fas fa-check"></i>
+                                                        已识别
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div class="answer-preview">
+                                                        <img src="https://via.placeholder.com/40x50" alt="答卷">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn-icon" title="预览">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="missing">
+                                                <td>王五</td>
+                                                <td>2025003</td>
+                                                <td>
+                                                    <span class="status-badge warning">
+                                                        <i class="fas fa-minus-circle"></i>
+                                                        未上传
+                                                    </span>
+                                                </td>
+                                                <td>-</td>
+                                                <td>
+                                                    <button class="btn-icon" title="上传">
+                                                        <i class="fas fa-upload"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="settings">
+                            <div class="grading-settings">
+                                <div class="settings-section">
+                                    <h3>AI评分设置</h3>
+                                    <div class="setting-item">
+                                        <label>评分模式</label>
+                                        <select class="form-select">
+                                            <option>标准模式</option>
+                                            <option>严格模式</option>
+                                            <option>宽松模式</option>
+                                        </select>
+                                    </div>
+                                    <div class="setting-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            启用人工复核
+                                        </label>
+                                        <small>置信度低于70%的题目将进入人工复核</small>
+                                    </div>
+                                    <div class="setting-item">
+                                        <label>
+                                            <input type="checkbox">
+                                            保存原始图片
+                                        </label>
+                                        <small>保留上传的原始答卷图片用于备份</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-section">
+                                    <h3>通知设置</h3>
+                                    <div class="setting-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            阅卷完成通知
+                                        </label>
+                                        <small>阅卷任务完成后发送通知</small>
+                                    </div>
+                                    <div class="setting-item">
+                                        <label>
+                                            <input type="checkbox">
+                                            异常情况提醒
+                                        </label>
+                                        <small>发现异常答卷时立即提醒</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-chevron-left"></i>
+                            上一步
+                        </button>
+                        <button class="btn btn-success btn-large">
+                            <i class="fas fa-play"></i>
+                            开始AI阅卷
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
