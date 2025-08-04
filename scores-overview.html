@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成绩总览 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="scores-overview.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item active">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-chart-bar"></i>
+                成绩管理
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/scores/overview" class="sidebar-nav-item active">
+                <i class="fas fa-chart-pie"></i>
+                <span>成绩总览</span>
+            </a>
+            <a href="/scores/details" class="sidebar-nav-item">
+                <i class="fas fa-table"></i>
+                <span>详细成绩</span>
+            </a>
+            <a href="/scores/comparison" class="sidebar-nav-item">
+                <i class="fas fa-balance-scale"></i>
+                <span>成绩对比</span>
+            </a>
+            <a href="/scores/export" class="sidebar-nav-item">
+                <i class="fas fa-download"></i>
+                <span>导出报告</span>
+            </a>
+        </nav>
+
+        <!-- 快速统计 -->
+        <div class="sidebar-stats">
+            <h3>统计概览</h3>
+            <div class="stat-card-mini">
+                <div class="stat-icon participants">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">215</div>
+                    <div class="stat-label">参考人数</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon average">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">82.5</div>
+                    <div class="stat-label">平均分</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon passing">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">及格率</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快捷操作 -->
+        <div class="sidebar-quick-actions">
+            <h3>快捷操作</h3>
+            <div class="quick-action-item">
+                <i class="fas fa-file-excel"></i>
+                <span>导出成绩表</span>
+            </div>
+            <div class="quick-action-item">
+                <i class="fas fa-chart-line"></i>
+                <span>生成分析报告</span>
+            </div>
+            <div class="quick-action-item">
+                <i class="fas fa-envelope"></i>
+                <span>发送成绩通知</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>成绩管理</span>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">成绩总览</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>成绩总览</h1>
+                <div class="header-subtitle">
+                    查看考试成绩统计和分布情况
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-filter"></i>
+                    筛选设置
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-download"></i>
+                    导出报告
+                </button>
+            </div>
+        </div>
+
+        <!-- 筛选工具栏 -->
+        <div class="filter-toolbar">
+            <div class="filter-group">
+                <label>考试选择：</label>
+                <select class="filter-select">
+                    <option value="exam1">高一数学月考</option>
+                    <option value="exam2">高一英语期中考试</option>
+                    <option value="exam3">高二物理模拟考</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>班级筛选：</label>
+                <select class="filter-select">
+                    <option value="">全部班级</option>
+                    <option value="class1">高一(1)班</option>
+                    <option value="class2">高一(2)班</option>
+                    <option value="class3">高一(3)班</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>学科：</label>
+                <select class="filter-select">
+                    <option value="">全部学科</option>
+                    <option value="math">数学</option>
+                    <option value="english">英语</option>
+                    <option value="physics">物理</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>时间范围：</label>
+                <input type="date" class="filter-input" value="2025-01-01">
+                <span>至</span>
+                <input type="date" class="filter-input" value="2025-01-31">
+            </div>
+        </div>
+
+        <!-- 统计卡片区域 -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-icon participants">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">
+                        <span class="stat-number">215</span>
+                        <span class="stat-unit">人</span>
+                    </div>
+                    <div class="stat-label">参考人数</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>比上次增加5人</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon average">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">
+                        <span class="stat-number">82.5</span>
+                        <span class="stat-unit">分</span>
+                    </div>
+                    <div class="stat-label">平均分</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>比上次提高3.2分</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon passing">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">
+                        <span class="stat-number">89</span>
+                        <span class="stat-unit">%</span>
+                    </div>
+                    <div class="stat-label">及格率</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>比上次提高5%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon highest">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">
+                        <span class="stat-number">98</span>
+                        <span class="stat-unit">分</span>
+                    </div>
+                    <div class="stat-label">最高分</div>
+                    <div class="stat-meta">
+                        <span>张三 · 高一(1)班</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon lowest">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">
+                        <span class="stat-number">45</span>
+                        <span class="stat-unit">分</span>
+                    </div>
+                    <div class="stat-label">最低分</div>
+                    <div class="stat-meta">
+                        <span>王五 · 高一(3)班</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon deviation">
+                    <i class="fas fa-chart-area"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">
+                        <span class="stat-number">12.8</span>
+                        <span class="stat-unit"></span>
+                    </div>
+                    <div class="stat-label">标准差</div>
+                    <div class="stat-meta">
+                        <span>成绩分布较均匀</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表分析区域 -->
+        <div class="charts-section">
+            <!-- 成绩分布图 -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>成绩分布</h3>
+                    <div class="chart-controls">
+                        <button class="chart-btn active" data-type="histogram">柱状图</button>
+                        <button class="chart-btn" data-type="pie">饼图</button>
+                        <button class="chart-btn" data-type="line">趋势图</button>
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <canvas id="distributionChart" width="400" height="200"></canvas>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <span class="legend-color excellent"></span>
+                        <span class="legend-label">优秀 (90-100分): 42人</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color good"></span>
+                        <span class="legend-label">良好 (80-89分): 85人</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color average"></span>
+                        <span class="legend-label">中等 (70-79分): 65人</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color below"></span>
+                        <span class="legend-label">及格 (60-69分): 18人</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color fail"></span>
+                        <span class="legend-label">不及格 (<60分): 5人</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 班级对比图 -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>班级对比</h3>
+                    <div class="chart-controls">
+                        <button class="chart-btn active" data-type="bar">柱状对比</button>
+                        <button class="chart-btn" data-type="radar">雷达图</button>
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <canvas id="classComparisonChart" width="400" height="200"></canvas>
+                </div>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>班级</th>
+                                <th>人数</th>
+                                <th>平均分</th>
+                                <th>及格率</th>
+                                <th>最高分</th>
+                                <th>排名</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="rank-1">
+                                <td>高一(1)班</td>
+                                <td>45</td>
+                                <td>85.2</td>
+                                <td>95%</td>
+                                <td>98</td>
+                                <td><span class="rank-badge rank-1">1</span></td>
+                            </tr>
+                            <tr class="rank-2">
+                                <td>高一(2)班</td>
+                                <td>42</td>
+                                <td>83.8</td>
+                                <td>88%</td>
+                                <td>95</td>
+                                <td><span class="rank-badge rank-2">2</span></td>
+                            </tr>
+                            <tr class="rank-3">
+                                <td>高一(3)班</td>
+                                <td>46</td>
+                                <td>81.2</td>
+                                <td>85%</td>
+                                <td>92</td>
+                                <td><span class="rank-badge rank-3">3</span></td>
+                            </tr>
+                            <tr>
+                                <td>高一(4)班</td>
+                                <td>41</td>
+                                <td>79.5</td>
+                                <td>83%</td>
+                                <td>89</td>
+                                <td><span class="rank-badge">4</span></td>
+                            </tr>
+                            <tr>
+                                <td>高一(5)班</td>
+                                <td>41</td>
+                                <td>78.1</td>
+                                <td>80%</td>
+                                <td>87</td>
+                                <td><span class="rank-badge">5</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 详细分析区域 -->
+        <div class="analysis-section">
+            <div class="analysis-card">
+                <div class="analysis-header">
+                    <h3>题目分析</h3>
+                    <button class="btn btn-secondary btn-sm">查看详情</button>
+                </div>
+                <div class="analysis-content">
+                    <div class="question-stats">
+                        <div class="question-stat-item">
+                            <div class="question-number">第1题</div>
+                            <div class="question-info">
+                                <div class="question-type">单选题 (4分)</div>
+                                <div class="question-accuracy">
+                                    <span class="accuracy-label">正确率</span>
+                                    <div class="accuracy-bar">
+                                        <div class="accuracy-fill" style="width: 95%"></div>
+                                    </div>
+                                    <span class="accuracy-value">95%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question-stat-item">
+                            <div class="question-number">第2题</div>
+                            <div class="question-info">
+                                <div class="question-type">单选题 (4分)</div>
+                                <div class="question-accuracy">
+                                    <span class="accuracy-label">正确率</span>
+                                    <div class="accuracy-bar">
+                                        <div class="accuracy-fill" style="width: 88%"></div>
+                                    </div>
+                                    <span class="accuracy-value">88%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question-stat-item">
+                            <div class="question-number">第3题</div>
+                            <div class="question-info">
+                                <div class="question-type">填空题 (6分)</div>
+                                <div class="question-accuracy">
+                                    <span class="accuracy-label">正确率</span>
+                                    <div class="accuracy-bar">
+                                        <div class="accuracy-fill" style="width: 72%"></div>
+                                    </div>
+                                    <span class="accuracy-value">72%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question-stat-item difficult">
+                            <div class="question-number">第4题</div>
+                            <div class="question-info">
+                                <div class="question-type">解答题 (15分)</div>
+                                <div class="question-accuracy">
+                                    <span class="accuracy-label">正确率</span>
+                                    <div class="accuracy-bar">
+                                        <div class="accuracy-fill low" style="width: 45%"></div>
+                                    </div>
+                                    <span class="accuracy-value">45%</span>
+                                </div>
+                                <div class="difficulty-tag">难点题目</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-card">
+                <div class="analysis-header">
+                    <h3>学生表现</h3>
+                    <button class="btn btn-secondary btn-sm">查看详情</button>
+                </div>
+                <div class="analysis-content">
+                    <div class="performance-categories">
+                        <div class="performance-item excellent">
+                            <div class="performance-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="performance-info">
+                                <div class="performance-label">优秀学生</div>
+                                <div class="performance-count">42人 (19.5%)</div>
+                                <div class="performance-desc">90分以上，表现优异</div>
+                            </div>
+                        </div>
+                        <div class="performance-item good">
+                            <div class="performance-icon">
+                                <i class="fas fa-thumbs-up"></i>
+                            </div>
+                            <div class="performance-info">
+                                <div class="performance-label">良好学生</div>
+                                <div class="performance-count">85人 (39.5%)</div>
+                                <div class="performance-desc">80-89分，成绩良好</div>
+                            </div>
+                        </div>
+                        <div class="performance-item attention">
+                            <div class="performance-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="performance-info">
+                                <div class="performance-label">需要关注</div>
+                                <div class="performance-count">23人 (10.7%)</div>
+                                <div class="performance-desc">60-69分，需要加强</div>
+                            </div>
+                        </div>
+                        <div class="performance-item help">
+                            <div class="performance-icon">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <div class="performance-info">
+                                <div class="performance-label">需要帮助</div>
+                                <div class="performance-count">5人 (2.3%)</div>
+                                <div class="performance-desc">60分以下，需要重点辅导</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 图表初始化脚本 -->
+    <script>
+        // 成绩分布图
+        const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+        new Chart(distributionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['0-59', '60-69', '70-79', '80-89', '90-100'],
+                datasets: [{
+                    label: '人数',
+                    data: [5, 18, 65, 85, 42],
+                    backgroundColor: ['#e74c3c', '#f39c12', '#3498db', '#27ae60', '#9b59b6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // 班级对比图
+        const comparisonCtx = document.getElementById('classComparisonChart').getContext('2d');
+        new Chart(comparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: ['高一(1)班', '高一(2)班', '高一(3)班', '高一(4)班', '高一(5)班'],
+                datasets: [{
+                    label: '平均分',
+                    data: [85.2, 83.8, 81.2, 79.5, 78.1],
+                    backgroundColor: '#667eea'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 70,
+                        max: 90
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

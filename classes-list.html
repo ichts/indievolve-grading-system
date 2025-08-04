@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>班级管理 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="classes-list.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item active">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-users"></i>
+                班级管理
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/classes/list" class="sidebar-nav-item active">
+                <i class="fas fa-list"></i>
+                <span>班级列表</span>
+            </a>
+            <a href="/classes/create" class="sidebar-nav-item">
+                <i class="fas fa-plus"></i>
+                <span>新建班级</span>
+            </a>
+            <a href="/classes/import" class="sidebar-nav-item">
+                <i class="fas fa-upload"></i>
+                <span>导入学生</span>
+            </a>
+            <a href="/classes/reports" class="sidebar-nav-item">
+                <i class="fas fa-chart-pie"></i>
+                <span>班级报告</span>
+            </a>
+        </nav>
+
+        <!-- 快速统计 -->
+        <div class="sidebar-stats">
+            <h3>统计概览</h3>
+            <div class="stat-card-mini">
+                <div class="stat-icon classes">
+                    <i class="fas fa-school"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">管理班级</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon students">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">356</div>
+                    <div class="stat-label">学生总数</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon average">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">82.5</div>
+                    <div class="stat-label">平均分</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快捷操作 -->
+        <div class="sidebar-quick-actions">
+            <h3>快捷操作</h3>
+            <div class="quick-action-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>新建班级</span>
+            </div>
+            <div class="quick-action-item">
+                <i class="fas fa-file-import"></i>
+                <span>批量导入学生</span>
+            </div>
+            <div class="quick-action-item">
+                <i class="fas fa-file-export"></i>
+                <span>导出班级信息</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>班级管理</span>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">班级列表</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>班级管理</h1>
+                <div class="header-subtitle">
+                    管理班级信息、学生档案和班级统计数据
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    导出报告
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-upload"></i>
+                    批量导入
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    新建班级
+                </button>
+            </div>
+        </div>
+
+        <!-- 筛选和搜索工具栏 -->
+        <div class="filter-toolbar">
+            <div class="filter-left">
+                <div class="filter-group">
+                    <label>年级筛选：</label>
+                    <select class="filter-select">
+                        <option value="">全部年级</option>
+                        <option value="grade1">高一年级</option>
+                        <option value="grade2">高二年级</option>
+                        <option value="grade3">高三年级</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>班主任：</label>
+                    <select class="filter-select">
+                        <option value="">全部老师</option>
+                        <option value="teacher1">张老师</option>
+                        <option value="teacher2">李老师</option>
+                        <option value="teacher3">王老师</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>班级状态：</label>
+                    <select class="filter-select">
+                        <option value="">全部状态</option>
+                        <option value="active">正常</option>
+                        <option value="archived">已归档</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索班级名称...">
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th"></i>
+                        卡片视图
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-list"></i>
+                        列表视图
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 班级统计概览 -->
+        <div class="classes-overview">
+            <div class="overview-stats">
+                <div class="stat-card">
+                    <div class="stat-icon total">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">管理班级</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>新增2个班级</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon students">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">356</div>
+                        <div class="stat-label">学生总数</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>比上学期增加15人</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon performance">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">82.5</div>
+                        <div class="stat-label">平均成绩</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>提升3.2分</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon attendance">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">96.8%</div>
+                        <div class="stat-label">出勤率</div>
+                        <div class="stat-change neutral">
+                            <i class="fas fa-minus"></i>
+                            <span>与上月持平</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overview-chart">
+                <div class="chart-header">
+                    <h3>班级成绩对比</h3>
+                    <div class="chart-controls">
+                        <select class="control-select">
+                            <option value="recent">最近考试</option>
+                            <option value="semester">本学期</option>
+                            <option value="year">本学年</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="classesComparisonChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 班级卡片网格 -->
+        <div class="classes-grid" id="classesGrid">
+            <!-- 班级卡片 1 -->
+            <div class="class-card excellent">
+                <div class="card-header">
+                    <div class="class-info">
+                        <h3>高一(1)班</h3>
+                        <div class="class-meta">
+                            <span class="grade-tag">高一年级</span>
+                            <span class="class-status active">正常</span>
+                        </div>
+                    </div>
+                    <div class="class-rank">
+                        <div class="rank-badge rank-1">1</div>
+                        <span class="rank-label">年级排名</span>
+                    </div>
+                </div>
+
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span class="stat-label">学生人数</span>
+                            <span class="stat-value">45人</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-user-tie"></i>
+                            <span class="stat-label">班主任</span>
+                            <span class="stat-value">张老师</span>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="stat-label">平均分</span>
+                            <span class="stat-value excellent">85.2分</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-percentage"></i>
+                            <span class="stat-label">及格率</span>
+                            <span class="stat-value excellent">95%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">最近考试表现</span>
+                        <span class="progress-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +3.5分
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill excellent" style="width: 85%"></div>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-users"></i>
+                        管理学生
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-chart-line"></i>
+                        学情分析
+                    </button>
+                </div>
+            </div>
+
+            <!-- 班级卡片 2 -->
+            <div class="class-card good">
+                <div class="card-header">
+                    <div class="class-info">
+                        <h3>高一(2)班</h3>
+                        <div class="class-meta">
+                            <span class="grade-tag">高一年级</span>
+                            <span class="class-status active">正常</span>
+                        </div>
+                    </div>
+                    <div class="class-rank">
+                        <div class="rank-badge rank-2">2</div>
+                        <span class="rank-label">年级排名</span>
+                    </div>
+                </div>
+
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span class="stat-label">学生人数</span>
+                            <span class="stat-value">42人</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-user-tie"></i>
+                            <span class="stat-label">班主任</span>
+                            <span class="stat-value">李老师</span>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="stat-label">平均分</span>
+                            <span class="stat-value good">83.8分</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-percentage"></i>
+                            <span class="stat-label">及格率</span>
+                            <span class="stat-value good">88%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">最近考试表现</span>
+                        <span class="progress-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +1.2分
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill good" style="width: 78%"></div>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-users"></i>
+                        管理学生
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-chart-line"></i>
+                        学情分析
+                    </button>
+                </div>
+            </div>
+
+            <!-- 班级卡片 3 -->
+            <div class="class-card average">
+                <div class="card-header">
+                    <div class="class-info">
+                        <h3>高一(3)班</h3>
+                        <div class="class-meta">
+                            <span class="grade-tag">高一年级</span>
+                            <span class="class-status active">正常</span>
+                        </div>
+                    </div>
+                    <div class="class-rank">
+                        <div class="rank-badge rank-3">3</div>
+                        <span class="rank-label">年级排名</span>
+                    </div>
+                </div>
+
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span class="stat-label">学生人数</span>
+                            <span class="stat-value">46人</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-user-tie"></i>
+                            <span class="stat-label">班主任</span>
+                            <span class="stat-value">王老师</span>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="stat-label">平均分</span>
+                            <span class="stat-value average">81.2分</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-percentage"></i>
+                            <span class="stat-label">及格率</span>
+                            <span class="stat-value average">85%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">最近考试表现</span>
+                        <span class="progress-trend negative">
+                            <i class="fas fa-arrow-down"></i>
+                            -0.8分
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill average" style="width: 72%"></div>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-users"></i>
+                        管理学生
+                    </button>
+                    <button class="btn btn-warning btn-sm">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        需要关注
+                    </button>
+                </div>
+            </div>
+
+            <!-- 班级卡片 4 -->
+            <div class="class-card attention">
+                <div class="card-header">
+                    <div class="class-info">
+                        <h3>高一(4)班</h3>
+                        <div class="class-meta">
+                            <span class="grade-tag">高一年级</span>
+                            <span class="class-status active">正常</span>
+                        </div>
+                    </div>
+                    <div class="class-rank">
+                        <div class="rank-badge">4</div>
+                        <span class="rank-label">年级排名</span>
+                    </div>
+                </div>
+
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span class="stat-label">学生人数</span>
+                            <span class="stat-value">41人</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-user-tie"></i>
+                            <span class="stat-label">班主任</span>
+                            <span class="stat-value">赵老师</span>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="stat-label">平均分</span>
+                            <span class="stat-value attention">79.5分</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-percentage"></i>
+                            <span class="stat-label">及格率</span>
+                            <span class="stat-value attention">83%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">最近考试表现</span>
+                        <span class="progress-trend negative">
+                            <i class="fas fa-arrow-down"></i>
+                            -2.1分
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill attention" style="width: 68%"></div>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-users"></i>
+                        管理学生
+                    </button>
+                    <button class="btn btn-warning btn-sm">
+                        <i class="fas fa-hands-helping"></i>
+                        辅导建议
+                    </button>
+                </div>
+            </div>
+
+            <!-- 班级卡片 5 - 高二年级 -->
+            <div class="class-card good">
+                <div class="card-header">
+                    <div class="class-info">
+                        <h3>高二(1)班</h3>
+                        <div class="class-meta">
+                            <span class="grade-tag grade2">高二年级</span>
+                            <span class="class-status active">正常</span>
+                        </div>
+                    </div>
+                    <div class="class-rank">
+                        <div class="rank-badge rank-1">1</div>
+                        <span class="rank-label">年级排名</span>
+                    </div>
+                </div>
+
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span class="stat-label">学生人数</span>
+                            <span class="stat-value">38人</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-user-tie"></i>
+                            <span class="stat-label">班主任</span>
+                            <span class="stat-value">刘老师</span>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="stat-label">平均分</span>
+                            <span class="stat-value good">87.3分</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-percentage"></i>
+                            <span class="stat-label">及格率</span>
+                            <span class="stat-value excellent">92%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">最近考试表现</span>
+                        <span class="progress-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +4.2分
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill excellent" style="width: 88%"></div>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-users"></i>
+                        管理学生
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-star"></i>
+                        优秀班级
+                    </button>
+                </div>
+            </div>
+
+            <!-- 更多班级卡片... -->
+            <div class="class-card average">
+                <div class="card-header">
+                    <div class="class-info">
+                        <h3>高二(2)班</h3>
+                        <div class="class-meta">
+                            <span class="grade-tag grade2">高二年级</span>
+                            <span class="class-status active">正常</span>
+                        </div>
+                    </div>
+                    <div class="class-rank">
+                        <div class="rank-badge">2</div>
+                        <span class="rank-label">年级排名</span>
+                    </div>
+                </div>
+
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span class="stat-label">学生人数</span>
+                            <span class="stat-value">40人</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-user-tie"></i>
+                            <span class="stat-label">班主任</span>
+                            <span class="stat-value">陈老师</span>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="stat-label">平均分</span>
+                            <span class="stat-value average">82.1分</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-percentage"></i>
+                            <span class="stat-label">及格率</span>
+                            <span class="stat-value good">87%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">最近考试表现</span>
+                        <span class="progress-trend neutral">
+                            <i class="fas fa-minus"></i>
+                            持平
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill average" style="width: 75%"></div>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-users"></i>
+                        管理学生
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-chart-line"></i>
+                        学情分析
+                    </button>
+                </div>
+            </div>
+
+            <!-- 高三班级 -->
+            <div class="class-card good">
+                <div class="card-header">
+                    <div class="class-info">
+                        <h3>高三(1)班</h3>
+                        <div class="class-meta">
+                            <span class="grade-tag grade3">高三年级</span>
+                            <span class="class-status active">正常</span>
+                        </div>
+                    </div>
+                    <div class="class-rank">
+                        <div class="rank-badge rank-1">1</div>
+                        <span class="rank-label">年级排名</span>
+                    </div>
+                </div>
+
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span class="stat-label">学生人数</span>
+                            <span class="stat-value">35人</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-user-tie"></i>
+                            <span class="stat-label">班主任</span>
+                            <span class="stat-value">周老师</span>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span class="stat-label">平均分</span>
+                            <span class="stat-value excellent">89.5分</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-percentage"></i>
+                            <span class="stat-label">及格率</span>
+                            <span class="stat-value excellent">97%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">最近考试表现</span>
+                        <span class="progress-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +2.8分
+                        </span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill excellent" style="width: 92%"></div>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-users"></i>
+                        管理学生
+                    </button>
+                    <button class="btn btn-success btn-sm">
+                        <i class="fas fa-graduation-cap"></i>
+                        毕业班
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分页组件 -->
+        <div class="pagination-container">
+            <div class="pagination-info">
+                显示第 1-8 条，共 8 个班级
+            </div>
+            <div class="pagination">
+                <button class="page-btn" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                    上一页
+                </button>
+                <div class="page-numbers">
+                    <button class="page-number active">1</button>
+                </div>
+                <button class="page-btn" disabled>
+                    下一页
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 新建班级模态框 -->
+    <div class="modal" id="createClassModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>新建班级</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>班级名称</label>
+                    <input type="text" class="form-input" placeholder="例如：高一(5)班">
+                </div>
+                <div class="form-group">
+                    <label>年级</label>
+                    <select class="form-select">
+                        <option value="">请选择年级</option>
+                        <option value="grade1">高一年级</option>
+                        <option value="grade2">高二年级</option>
+                        <option value="grade3">高三年级</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>班主任</label>
+                    <select class="form-select">
+                        <option value="">请选择班主任</option>
+                        <option value="teacher1">张老师</option>
+                        <option value="teacher2">李老师</option>
+                        <option value="teacher3">王老师</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>预期人数</label>
+                    <input type="number" class="form-input" placeholder="预期学生人数" min="1" max="60">
+                </div>
+                <div class="form-group">
+                    <label>班级描述</label>
+                    <textarea class="form-textarea" placeholder="班级特色或备注信息（可选）"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary">取消</button>
+                <button class="btn btn-primary">创建班级</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图表初始化脚本 -->
+    <script>
+        // 班级成绩对比图
+        const comparisonCtx = document.getElementById('classesComparisonChart').getContext('2d');
+        new Chart(comparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: ['高一(1)班', '高一(2)班', '高一(3)班', '高一(4)班', '高二(1)班', '高二(2)班', '高三(1)班'],
+                datasets: [{
+                    label: '平均分',
+                    data: [85.2, 83.8, 81.2, 79.5, 87.3, 82.1, 89.5],
+                    backgroundColor: [
+                        '#9b59b6', '#3498db', '#f39c12', '#e74c3c', '#27ae60', '#f39c12', '#2ecc71'
+                    ],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 75,
+                        max: 95
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

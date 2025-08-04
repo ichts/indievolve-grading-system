@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成绩详情 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="scores-details.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item active">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-chart-bar"></i>
+                成绩管理
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/scores/overview" class="sidebar-nav-item">
+                <i class="fas fa-chart-pie"></i>
+                <span>成绩总览</span>
+            </a>
+            <a href="/scores/details" class="sidebar-nav-item active">
+                <i class="fas fa-table"></i>
+                <span>详细成绩</span>
+            </a>
+            <a href="/scores/comparison" class="sidebar-nav-item">
+                <i class="fas fa-balance-scale"></i>
+                <span>成绩对比</span>
+            </a>
+            <a href="/scores/export" class="sidebar-nav-item">
+                <i class="fas fa-download"></i>
+                <span>导出报告</span>
+            </a>
+        </nav>
+
+        <!-- 考试信息 -->
+        <div class="sidebar-exam-info">
+            <h3>考试信息</h3>
+            <div class="exam-info-card">
+                <div class="exam-title">高一数学月考</div>
+                <div class="exam-meta">
+                    <div class="exam-meta-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>2025-01-15</span>
+                    </div>
+                    <div class="exam-meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>120分钟</span>
+                    </div>
+                    <div class="exam-meta-item">
+                        <i class="fas fa-calculator"></i>
+                        <span>150分</span>
+                    </div>
+                    <div class="exam-meta-item">
+                        <i class="fas fa-users"></i>
+                        <span>215人参考</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速统计 -->
+        <div class="sidebar-stats">
+            <h3>成绩统计</h3>
+            <div class="stat-card-mini">
+                <div class="stat-icon average">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">82.5</div>
+                    <div class="stat-label">平均分</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon passing">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">及格率</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>成绩管理</span>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">详细成绩</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>高一数学月考 - 详细成绩</h1>
+                <div class="header-subtitle">
+                    查看学生详细成绩和答题情况
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-print"></i>
+                    打印成绩单
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-file-excel"></i>
+                    导出Excel
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i>
+                    生成报告
+                </button>
+            </div>
+        </div>
+
+        <!-- 筛选和搜索工具栏 -->
+        <div class="filter-toolbar">
+            <div class="filter-left">
+                <div class="filter-group">
+                    <label>班级筛选：</label>
+                    <select class="filter-select">
+                        <option value="">全部班级</option>
+                        <option value="class1">高一(1)班</option>
+                        <option value="class2">高一(2)班</option>
+                        <option value="class3">高一(3)班</option>
+                        <option value="class4">高一(4)班</option>
+                        <option value="class5">高一(5)班</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>成绩范围：</label>
+                    <select class="filter-select">
+                        <option value="">全部成绩</option>
+                        <option value="excellent">优秀 (90-100)</option>
+                        <option value="good">良好 (80-89)</option>
+                        <option value="average">中等 (70-79)</option>
+                        <option value="below">及格 (60-69)</option>
+                        <option value="fail">不及格 (<60)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索学生姓名、学号...">
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="table">
+                        <i class="fas fa-table"></i>
+                        表格视图
+                    </button>
+                    <button class="view-btn" data-view="card">
+                        <i class="fas fa-th-large"></i>
+                        卡片视图
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 批量操作栏 -->
+        <div class="batch-operations">
+            <div class="batch-info">
+                <label class="batch-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <span class="checkmark"></span>
+                </label>
+                <span>已选择 <strong id="selectedCount">0</strong> 名学生</span>
+            </div>
+            <div class="batch-actions">
+                <button class="btn btn-secondary btn-sm">
+                    <i class="fas fa-envelope"></i>
+                    发送成绩
+                </button>
+                <button class="btn btn-secondary btn-sm">
+                    <i class="fas fa-file-export"></i>
+                    批量导出
+                </button>
+                <button class="btn btn-primary btn-sm">
+                    <i class="fas fa-chart-bar"></i>
+                    生成报告
+                </button>
+            </div>
+        </div>
+
+        <!-- 成绩表格 -->
+        <div class="scores-table-container">
+            <div class="table-wrapper">
+                <table class="scores-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-col">
+                                <label class="table-checkbox">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th class="sortable" data-sort="rank">
+                                <span>排名</span>
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th class="sortable" data-sort="name">
+                                <span>姓名</span>
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th class="sortable" data-sort="student-id">
+                                <span>学号</span>
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th class="sortable" data-sort="class">
+                                <span>班级</span>
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th class="sortable" data-sort="total">
+                                <span>总分</span>
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th>第1题<br><small>(4分)</small></th>
+                            <th>第2题<br><small>(4分)</small></th>
+                            <th>第3题<br><small>(6分)</small></th>
+                            <th>第4题<br><small>(15分)</small></th>
+                            <th>第5题<br><small>(15分)</small></th>
+                            <th>第6题<br><small>(16分)</small></th>
+                            <th class="sortable" data-sort="class-rank">
+                                <span>班级排名</span>
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="student-row rank-1">
+                            <td>
+                                <label class="table-checkbox">
+                                    <input type="checkbox" class="student-checkbox" data-student-id="2025001">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="rank-display">
+                                    <span class="rank-number rank-1">1</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="student-info">
+                                    <div class="student-name">张三</div>
+                                    <div class="student-meta">优秀学生</div>
+                                </div>
+                            </td>
+                            <td>2025001</td>
+                            <td>高一(1)班</td>
+                            <td>
+                                <div class="total-score excellent">
+                                    <span class="score-value">98</span>
+                                    <span class="score-max">/150</span>
+                                </div>
+                            </td>
+                            <td><span class="question-score full">4</span></td>
+                            <td><span class="question-score full">4</span></td>
+                            <td><span class="question-score full">6</span></td>
+                            <td><span class="question-score good">13</span></td>
+                            <td><span class="question-score good">14</span></td>
+                            <td><span class="question-score full">16</span></td>
+                            <td>
+                                <span class="class-rank rank-1">1</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-icon" title="查看答卷">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-icon" title="学情分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="btn-icon" title="发送成绩">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="student-row rank-2">
+                            <td>
+                                <label class="table-checkbox">
+                                    <input type="checkbox" class="student-checkbox" data-student-id="2025002">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="rank-display">
+                                    <span class="rank-number rank-2">2</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="student-info">
+                                    <div class="student-name">李四</div>
+                                    <div class="student-meta">优秀学生</div>
+                                </div>
+                            </td>
+                            <td>2025002</td>
+                            <td>高一(1)班</td>
+                            <td>
+                                <div class="total-score excellent">
+                                    <span class="score-value">95</span>
+                                    <span class="score-max">/150</span>
+                                </div>
+                            </td>
+                            <td><span class="question-score full">4</span></td>
+                            <td><span class="question-score good">3</span></td>
+                            <td><span class="question-score full">6</span></td>
+                            <td><span class="question-score full">15</span></td>
+                            <td><span class="question-score good">12</span></td>
+                            <td><span class="question-score full">16</span></td>
+                            <td>
+                                <span class="class-rank rank-2">2</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-icon" title="查看答卷">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-icon" title="学情分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="btn-icon" title="发送成绩">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="student-row">
+                            <td>
+                                <label class="table-checkbox">
+                                    <input type="checkbox" class="student-checkbox" data-student-id="2025003">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="rank-display">
+                                    <span class="rank-number">15</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="student-info">
+                                    <div class="student-name">王五</div>
+                                    <div class="student-meta">中等水平</div>
+                                </div>
+                            </td>
+                            <td>2025003</td>
+                            <td>高一(2)班</td>
+                            <td>
+                                <div class="total-score good">
+                                    <span class="score-value">82</span>
+                                    <span class="score-max">/150</span>
+                                </div>
+                            </td>
+                            <td><span class="question-score good">3</span></td>
+                            <td><span class="question-score full">4</span></td>
+                            <td><span class="question-score good">5</span></td>
+                            <td><span class="question-score average">10</span></td>
+                            <td><span class="question-score good">12</span></td>
+                            <td><span class="question-score good">14</span></td>
+                            <td>
+                                <span class="class-rank">8</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-icon" title="查看答卷">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-icon" title="学情分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="btn-icon" title="发送成绩">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="student-row attention">
+                            <td>
+                                <label class="table-checkbox">
+                                    <input type="checkbox" class="student-checkbox" data-student-id="2025004">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="rank-display">
+                                    <span class="rank-number">156</span>
+                                    <i class="fas fa-exclamation-triangle attention-icon" title="需要关注"></i>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="student-info">
+                                    <div class="student-name">赵六</div>
+                                    <div class="student-meta">需要关注</div>
+                                </div>
+                            </td>
+                            <td>2025004</td>
+                            <td>高一(3)班</td>
+                            <td>
+                                <div class="total-score below">
+                                    <span class="score-value">65</span>
+                                    <span class="score-max">/150</span>
+                                </div>
+                            </td>
+                            <td><span class="question-score good">3</span></td>
+                            <td><span class="question-score average">2</span></td>
+                            <td><span class="question-score average">4</span></td>
+                            <td><span class="question-score poor">6</span></td>
+                            <td><span class="question-score poor">8</span></td>
+                            <td><span class="question-score good">12</span></td>
+                            <td>
+                                <span class="class-rank">35</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-icon" title="查看答卷">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-icon" title="学情分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="btn-icon attention" title="重点关注">
+                                        <i class="fas fa-flag"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="student-row help-needed">
+                            <td>
+                                <label class="table-checkbox">
+                                    <input type="checkbox" class="student-checkbox" data-student-id="2025005">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="rank-display">
+                                    <span class="rank-number">210</span>
+                                    <i class="fas fa-hands-helping help-icon" title="需要帮助"></i>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="student-info">
+                                    <div class="student-name">钱七</div>
+                                    <div class="student-meta">需要帮助</div>
+                                </div>
+                            </td>
+                            <td>2025005</td>
+                            <td>高一(4)班</td>
+                            <td>
+                                <div class="total-score fail">
+                                    <span class="score-value">45</span>
+                                    <span class="score-max">/150</span>
+                                </div>
+                            </td>
+                            <td><span class="question-score average">2</span></td>
+                            <td><span class="question-score poor">1</span></td>
+                            <td><span class="question-score poor">2</span></td>
+                            <td><span class="question-score poor">5</span></td>
+                            <td><span class="question-score poor">4</span></td>
+                            <td><span class="question-score average">8</span></td>
+                            <td>
+                                <span class="class-rank">41</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-icon" title="查看答卷">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-icon" title="学情分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="btn-icon help" title="安排辅导">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 分页组件 -->
+        <div class="pagination-container">
+            <div class="pagination-info">
+                显示第 1-20 条，共 215 条记录
+            </div>
+            <div class="pagination">
+                <button class="page-btn" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                    上一页
+                </button>
+                <div class="page-numbers">
+                    <button class="page-number active">1</button>
+                    <button class="page-number">2</button>
+                    <button class="page-number">3</button>
+                    <button class="page-number">...</button>
+                    <button class="page-number">11</button>
+                </div>
+                <button class="page-btn">
+                    下一页
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="page-size-selector">
+                每页显示：
+                <select>
+                    <option value="20" selected>20条</option>
+                    <option value="50">50条</option>
+                    <option value="100">100条</option>
+                </select>
+            </div>
+        </div>
+    </main>
+
+    <!-- 学生详情模态框 -->
+    <div class="modal" id="studentDetailModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>学生成绩详情</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="student-detail-tabs">
+                    <button class="tab-btn active" data-tab="scores">成绩详情</button>
+                    <button class="tab-btn" data-tab="answers">答题情况</button>
+                    <button class="tab-btn" data-tab="analysis">学情分析</button>
+                </div>
+                <div class="student-detail-content">
+                    <!-- 详情内容将动态加载 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary">关闭</button>
+                <button class="btn btn-primary">生成报告</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

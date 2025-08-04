@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人学情分析 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="analysis-student.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-chart-line"></i>
+                学情分析
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/analysis/dashboard" class="sidebar-nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>分析首页</span>
+            </a>
+            <a href="/analysis/student" class="sidebar-nav-item active">
+                <i class="fas fa-user-graduate"></i>
+                <span>个人学情</span>
+            </a>
+            <a href="/analysis/class" class="sidebar-nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级学情</span>
+            </a>
+            <a href="/analysis/knowledge" class="sidebar-nav-item">
+                <i class="fas fa-brain"></i>
+                <span>知识点分析</span>
+            </a>
+        </nav>
+
+        <!-- 学生选择器 -->
+        <div class="sidebar-student-selector">
+            <h3>选择学生</h3>
+            <div class="student-search">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索学生姓名...">
+                </div>
+            </div>
+            <div class="student-list">
+                <div class="student-item active">
+                    <div class="student-avatar">
+                        <img src="https://via.placeholder.com/32x32/667eea/ffffff?text=张三" alt="张三">
+                    </div>
+                    <div class="student-info">
+                        <div class="student-name">张三</div>
+                        <div class="student-class">高一(1)班</div>
+                    </div>
+                    <div class="student-rank">1</div>
+                </div>
+                <div class="student-item">
+                    <div class="student-avatar">
+                        <img src="https://via.placeholder.com/32x32/f093fb/ffffff?text=李四" alt="李四">
+                    </div>
+                    <div class="student-info">
+                        <div class="student-name">李四</div>
+                        <div class="student-class">高一(1)班</div>
+                    </div>
+                    <div class="student-rank">2</div>
+                </div>
+                <div class="student-item">
+                    <div class="student-avatar">
+                        <img src="https://via.placeholder.com/32x32/4facfe/ffffff?text=王五" alt="王五">
+                    </div>
+                    <div class="student-info">
+                        <div class="student-name">王五</div>
+                        <div class="student-class">高一(2)班</div>
+                    </div>
+                    <div class="student-rank">15</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速统计 -->
+        <div class="sidebar-stats">
+            <h3>快速统计</h3>
+            <div class="stat-card-mini">
+                <div class="stat-icon rank">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">班级排名</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon average">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">92.5</div>
+                    <div class="stat-label">平均分</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>学情分析</span>
+            <i class="fas fa-chevron-right"></i>
+            <a href="/analysis/dashboard">分析首页</a>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">张三 个人学情</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>张三 - 个人学情分析</h1>
+                <div class="header-subtitle">
+                    基于AI的个人学习能力和知识掌握度深度分析
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    返回分析首页
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-envelope"></i>
+                    发送报告
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-file-pdf"></i>
+                    生成PDF报告
+                </button>
+            </div>
+        </div>
+
+        <!-- 学生画像 -->
+        <div class="student-profile">
+            <div class="profile-main">
+                <div class="profile-avatar">
+                    <img src="https://via.placeholder.com/120x120/667eea/ffffff?text=张三" alt="张三">
+                    <div class="profile-status excellent">
+                        <i class="fas fa-star"></i>
+                        <span>优秀学生</span>
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <div class="basic-info">
+                        <h2>张三</h2>
+                        <div class="info-details">
+                            <div class="info-item">
+                                <i class="fas fa-id-card"></i>
+                                <span>学号：2025001</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-users"></i>
+                                <span>班级：高一(1)班</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>入学：2024年9月</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-trophy"></i>
+                                <span>班级排名：第1名</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="learning-tags">
+                        <h3>学习能力标签</h3>
+                        <div class="tags-container">
+                            <span class="ability-tag excellent">逻辑思维强</span>
+                            <span class="ability-tag good">计算能力优</span>
+                            <span class="ability-tag excellent">学习主动</span>
+                            <span class="ability-tag good">答题规范</span>
+                            <span class="ability-tag average">创新思维</span>
+                        </div>
+                    </div>
+                    <div class="subject-performance">
+                        <h3>擅长与薄弱科目</h3>
+                        <div class="subjects-grid">
+                            <div class="subject-strength">
+                                <div class="subject-header">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span>擅长科目</span>
+                                </div>
+                                <div class="subject-list">
+                                    <div class="subject-item excellent">数学 - 95分</div>
+                                    <div class="subject-item good">物理 - 88分</div>
+                                </div>
+                            </div>
+                            <div class="subject-weakness">
+                                <div class="subject-header">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>薄弱科目</span>
+                                </div>
+                                <div class="subject-list">
+                                    <div class="subject-item average">英语 - 76分</div>
+                                    <div class="subject-item poor">化学 - 68分</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 能力分析图表 -->
+        <div class="ability-analysis">
+            <div class="analysis-section">
+                <div class="section-header">
+                    <h2>各学科能力雷达图</h2>
+                    <div class="time-selector">
+                        <select class="filter-select">
+                            <option value="current">当前学期</option>
+                            <option value="last">上学期</option>
+                            <option value="year">本年度</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="radar-charts-grid">
+                    <div class="radar-chart-card">
+                        <div class="chart-header">
+                            <h3>数学能力分析</h3>
+                            <div class="subject-score excellent">95分</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="mathRadarChart" width="300" height="300"></canvas>
+                        </div>
+                        <div class="ability-summary">
+                            <div class="summary-item">
+                                <span class="ability-name">计算能力</span>
+                                <div class="ability-bar">
+                                    <div class="ability-fill excellent" style="width: 95%"></div>
+                                </div>
+                                <span class="ability-score">95</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="ability-name">逻辑推理</span>
+                                <div class="ability-bar">
+                                    <div class="ability-fill excellent" style="width: 92%"></div>
+                                </div>
+                                <span class="ability-score">92</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="ability-name">空间想象</span>
+                                <div class="ability-bar">
+                                    <div class="ability-fill good" style="width: 85%"></div>
+                                </div>
+                                <span class="ability-score">85</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="radar-chart-card">
+                        <div class="chart-header">
+                            <h3>英语能力分析</h3>
+                            <div class="subject-score average">76分</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="englishRadarChart" width="300" height="300"></canvas>
+                        </div>
+                        <div class="ability-summary">
+                            <div class="summary-item">
+                                <span class="ability-name">词汇掌握</span>
+                                <div class="ability-bar">
+                                    <div class="ability-fill good" style="width: 82%"></div>
+                                </div>
+                                <span class="ability-score">82</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="ability-name">语法运用</span>
+                                <div class="ability-bar">
+                                    <div class="ability-fill average" style="width: 75%"></div>
+                                </div>
+                                <span class="ability-score">75</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="ability-name">阅读理解</span>
+                                <div class="ability-bar">
+                                    <div class="ability-fill average" style="width: 70%"></div>
+                                </div>
+                                <span class="ability-score">70</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="radar-chart-card">
+                        <div class="chart-header">
+                            <h3>物理能力分析</h3>
+                            <div class="subject-score good">88分</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="physicsRadarChart" width="300" height="300"></canvas>
+                        </div>
+                        <div class="ability-summary">
+                            <div class="summary-item">
+                                <span class="ability-name">概念理解</span>
+                                <div class="ability-bar">
+                                    <div class="ability-fill excellent" style="width: 90%"></div>
+                                </div>
+                                <span class="ability-score">90</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="ability-name">实验设计</span>
+                                <div class="ability-bar">
+                                    <div class="ability-fill good" style="width: 85%"></div>
+                                </div>
+                                <span class="ability-score">85</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="ability-name">应用计算</span>
+                                <div class="ability-bar">
+                                    <div class="ability-fill good" style="width: 88%"></div>
+                                </div>
+                                <span class="ability-score">88</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 知识点掌握度矩阵 -->
+        <div class="knowledge-matrix">
+            <div class="section-header">
+                <h2>知识点掌握度矩阵</h2>
+                <div class="matrix-controls">
+                    <div class="subject-tabs">
+                        <button class="subject-tab active" data-subject="math">数学</button>
+                        <button class="subject-tab" data-subject="english">英语</button>
+                        <button class="subject-tab" data-subject="physics">物理</button>
+                    </div>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-download"></i>
+                        导出详情
+                    </button>
+                </div>
+            </div>
+
+            <div class="matrix-content active" id="math-matrix">
+                <div class="knowledge-overview">
+                    <div class="overview-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">25</div>
+                            <div class="stat-label">总知识点</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">18</div>
+                            <div class="stat-label">已掌握</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">待加强</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">需重点关注</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="knowledge-grid">
+                    <div class="knowledge-category">
+                        <h3>函数与方程</h3>
+                        <div class="knowledge-items">
+                            <div class="knowledge-item excellent" data-mastery="95">
+                                <div class="item-name">二次函数</div>
+                                <div class="item-score">95%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item good" data-mastery="88">
+                                <div class="item-name">指数函数</div>
+                                <div class="item-score">88%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item average" data-mastery="72">
+                                <div class="item-name">对数函数</div>
+                                <div class="item-score">72%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item poor" data-mastery="58">
+                                <div class="item-name">三角函数</div>
+                                <div class="item-score">58%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-times-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="knowledge-category">
+                        <h3>几何与图形</h3>
+                        <div class="knowledge-items">
+                            <div class="knowledge-item excellent" data-mastery="92">
+                                <div class="item-name">立体几何</div>
+                                <div class="item-score">92%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item good" data-mastery="85">
+                                <div class="item-name">平面几何</div>
+                                <div class="item-score">85%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item good" data-mastery="80">
+                                <div class="item-name">向量运算</div>
+                                <div class="item-score">80%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item average" data-mastery="75">
+                                <div class="item-name">解析几何</div>
+                                <div class="item-score">75%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="knowledge-category">
+                        <h3>概率统计</h3>
+                        <div class="knowledge-items">
+                            <div class="knowledge-item good" data-mastery="82">
+                                <div class="item-name">数据分析</div>
+                                <div class="item-score">82%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item average" data-mastery="70">
+                                <div class="item-name">排列组合</div>
+                                <div class="item-score">70%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item average" data-mastery="68">
+                                <div class="item-name">概率基础</div>
+                                <div class="item-score">68%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item poor" data-mastery="55">
+                                <div class="item-name">统计分析</div>
+                                <div class="item-score">55%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-times-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-content" id="english-matrix">
+                <div class="knowledge-overview">
+                    <div class="overview-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">20</div>
+                            <div class="stat-label">总知识点</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">已掌握</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">待加强</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">需重点关注</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="knowledge-grid">
+                    <div class="knowledge-category">
+                        <h3>语法结构</h3>
+                        <div class="knowledge-items">
+                            <div class="knowledge-item good" data-mastery="85">
+                                <div class="item-name">时态语态</div>
+                                <div class="item-score">85%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item average" data-mastery="72">
+                                <div class="item-name">从句结构</div>
+                                <div class="item-score">72%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item average" data-mastery="68">
+                                <div class="item-name">非谓语动词</div>
+                                <div class="item-score">68%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="knowledge-category">
+                        <h3>词汇运用</h3>
+                        <div class="knowledge-items">
+                            <div class="knowledge-item excellent" data-mastery="90">
+                                <div class="item-name">基础词汇</div>
+                                <div class="item-score">90%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item good" data-mastery="78">
+                                <div class="item-name">词汇搭配</div>
+                                <div class="item-score">78%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="knowledge-item poor" data-mastery="52">
+                                <div class="item-name">高级词汇</div>
+                                <div class="item-score">52%</div>
+                                <div class="item-status">
+                                    <i class="fas fa-times-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 历次考试趋势图 -->
+        <div class="exam-trends">
+            <div class="section-header">
+                <h2>历次考试趋势分析</h2>
+                <div class="trend-controls">
+                    <div class="trend-tabs">
+                        <button class="trend-tab active" data-trend="scores">成绩趋势</button>
+                        <button class="trend-tab" data-trend="ranking">排名趋势</button>
+                        <button class="trend-tab" data-trend="ability">能力趋势</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trend-content">
+                <div class="trend-chart-container">
+                    <canvas id="examTrendChart" width="800" height="400"></canvas>
+                </div>
+                
+                <div class="trend-analysis">
+                    <div class="analysis-insights">
+                        <div class="insight-card positive">
+                            <div class="insight-icon">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>显著进步</h4>
+                                <p>近3次考试平均分提升了12.5分，排名上升8位</p>
+                            </div>
+                        </div>
+                        <div class="insight-card neutral">
+                            <div class="insight-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>成绩稳定</h4>
+                                <p>数学成绩保持在90分以上，表现稳定优异</p>
+                            </div>
+                        </div>
+                        <div class="insight-card warning">
+                            <div class="insight-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>需要关注</h4>
+                                <p>英语成绩存在波动，建议加强基础训练</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="performance-comparison">
+                        <h3>与班级平均分对比</h3>
+                        <div class="comparison-items">
+                            <div class="comparison-item">
+                                <div class="subject-name">数学</div>
+                                <div class="score-comparison">
+                                    <div class="student-score">95</div>
+                                    <div class="vs">vs</div>
+                                    <div class="class-average">82</div>
+                                </div>
+                                <div class="difference positive">+13分</div>
+                            </div>
+                            <div class="comparison-item">
+                                <div class="subject-name">英语</div>
+                                <div class="score-comparison">
+                                    <div class="student-score">76</div>
+                                    <div class="vs">vs</div>
+                                    <div class="class-average">78</div>
+                                </div>
+                                <div class="difference negative">-2分</div>
+                            </div>
+                            <div class="comparison-item">
+                                <div class="subject-name">物理</div>
+                                <div class="score-comparison">
+                                    <div class="student-score">88</div>
+                                    <div class="vs">vs</div>
+                                    <div class="class-average">75</div>
+                                </div>
+                                <div class="difference positive">+13分</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 详细分析 -->
+        <div class="detailed-student-analysis">
+            <div class="section-header">
+                <h2>详细学情分析</h2>
+                <div class="analysis-tabs">
+                    <button class="analysis-tab active" data-tab="errors">错题分析</button>
+                    <button class="analysis-tab" data-tab="habits">学习习惯</button>
+                    <button class="analysis-tab" data-tab="suggestions">改进建议</button>
+                </div>
+            </div>
+
+            <div class="analysis-tab-content active" id="errors">
+                <div class="error-analysis-grid">
+                    <div class="error-types-chart">
+                        <h3>错误类型统计</h3>
+                        <div class="chart-container">
+                            <canvas id="errorTypesChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="error-legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #e74c3c;"></span>
+                                <span>计算错误 35%</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #f39c12;"></span>
+                                <span>概念理解 28%</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #3498db;"></span>
+                                <span>方法选择 22%</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #95a5a6;"></span>
+                                <span>格式问题 15%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="frequent-errors">
+                        <h3>常见错误分析</h3>
+                        <div class="error-list">
+                            <div class="error-item urgent">
+                                <div class="error-header">
+                                    <div class="error-type">计算错误</div>
+                                    <div class="error-frequency">频次: 12</div>
+                                </div>
+                                <div class="error-description">
+                                    在复杂运算中容易出现符号错误和步骤遗漏
+                                </div>
+                                <div class="error-examples">
+                                    <div class="example-tag">三角函数化简</div>
+                                    <div class="example-tag">二次方程求解</div>
+                                </div>
+                            </div>
+                            
+                            <div class="error-item important">
+                                <div class="error-header">
+                                    <div class="error-type">概念理解</div>
+                                    <div class="error-frequency">频次: 8</div>
+                                </div>
+                                <div class="error-description">
+                                    对统计概念的理解不够深入，影响问题解决
+                                </div>
+                                <div class="error-examples">
+                                    <div class="example-tag">方差计算</div>
+                                    <div class="example-tag">概率分布</div>
+                                </div>
+                            </div>
+
+                            <div class="error-item normal">
+                                <div class="error-header">
+                                    <div class="error-type">方法选择</div>
+                                    <div class="error-frequency">频次: 5</div>
+                                </div>
+                                <div class="error-description">
+                                    面对综合题时，解题方法选择不够优化
+                                </div>
+                                <div class="error-examples">
+                                    <div class="example-tag">函数最值</div>
+                                    <div class="example-tag">几何证明</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-tab-content" id="habits">
+                <div class="habits-analysis-grid">
+                    <div class="study-habits">
+                        <h3>学习习惯评估</h3>
+                        <div class="habit-items">
+                            <div class="habit-item excellent">
+                                <div class="habit-info">
+                                    <div class="habit-name">答题规范性</div>
+                                    <div class="habit-score">优秀</div>
+                                </div>
+                                <div class="habit-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill excellent" style="width: 95%"></div>
+                                    </div>
+                                    <span class="progress-value">95%</span>
+                                </div>
+                                <div class="habit-desc">字迹清晰，步骤完整，格式规范</div>
+                            </div>
+
+                            <div class="habit-item good">
+                                <div class="habit-info">
+                                    <div class="habit-name">时间管理</div>
+                                    <div class="habit-score">良好</div>
+                                </div>
+                                <div class="habit-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill good" style="width: 85%"></div>
+                                    </div>
+                                    <span class="progress-value">85%</span>
+                                </div>
+                                <div class="habit-desc">能够合理分配答题时间</div>
+                            </div>
+
+                            <div class="habit-item average">
+                                <div class="habit-info">
+                                    <div class="habit-name">检查验证</div>
+                                    <div class="habit-score">待提升</div>
+                                </div>
+                                <div class="habit-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill average" style="width: 70%"></div>
+                                    </div>
+                                    <span class="progress-value">70%</span>
+                                </div>
+                                <div class="habit-desc">答题后检查不够仔细</div>
+                            </div>
+
+                            <div class="habit-item poor">
+                                <div class="habit-info">
+                                    <div class="habit-name">创新思维</div>
+                                    <div class="habit-score">需加强</div>
+                                </div>
+                                <div class="habit-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill poor" style="width: 60%"></div>
+                                    </div>
+                                    <span class="progress-value">60%</span>
+                                </div>
+                                <div class="habit-desc">缺乏多角度思考和创新解法</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="learning-style">
+                        <h3>学习风格分析</h3>
+                        <div class="style-radar">
+                            <canvas id="learningStyleChart" width="300" height="300"></canvas>
+                        </div>
+                        <div class="style-description">
+                            <div class="style-item">
+                                <div class="style-label">视觉学习</div>
+                                <div class="style-strength">强</div>
+                            </div>
+                            <div class="style-item">
+                                <div class="style-label">逻辑分析</div>
+                                <div class="style-strength">强</div>
+                            </div>
+                            <div class="style-item">
+                                <div class="style-label">实践操作</div>
+                                <div class="style-strength">中</div>
+                            </div>
+                            <div class="style-item">
+                                <div class="style-label">合作学习</div>
+                                <div class="style-strength">弱</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-tab-content" id="suggestions">
+                <div class="suggestions-comprehensive">
+                    <div class="suggestions-overview">
+                        <div class="overview-card immediate">
+                            <div class="card-header">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <h3>立即改进</h3>
+                            </div>
+                            <div class="suggestion-items">
+                                <div class="suggestion-item">
+                                    <div class="suggestion-content">
+                                        <h4>加强计算准确性训练</h4>
+                                        <p>每天完成20道计算题，重点练习符号运算和化简</p>
+                                    </div>
+                                    <div class="suggestion-action">
+                                        <button class="btn btn-sm btn-primary">开始训练</button>
+                                    </div>
+                                </div>
+                                <div class="suggestion-item">
+                                    <div class="suggestion-content">
+                                        <h4>统计概念专项复习</h4>
+                                        <p>复习方差、标准差等统计概念，做相关练习题</p>
+                                    </div>
+                                    <div class="suggestion-action">
+                                        <button class="btn btn-sm btn-primary">查看资源</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="overview-card shortterm">
+                            <div class="card-header">
+                                <i class="fas fa-clock"></i>
+                                <h3>短期目标</h3>
+                            </div>
+                            <div class="suggestion-items">
+                                <div class="suggestion-item">
+                                    <div class="suggestion-content">
+                                        <h4>提升英语阅读理解能力</h4>
+                                        <p>每周完成3篇英语阅读理解，积累词汇和语感</p>
+                                    </div>
+                                    <div class="suggestion-action">
+                                        <button class="btn btn-sm btn-secondary">制定计划</button>
+                                    </div>
+                                </div>
+                                <div class="suggestion-item">
+                                    <div class="suggestion-content">
+                                        <h4>培养检查验证习惯</h4>
+                                        <p>答题后预留5-10分钟检查时间，养成验证习惯</p>
+                                    </div>
+                                    <div class="suggestion-action">
+                                        <button class="btn btn-sm btn-secondary">设置提醒</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="overview-card longterm">
+                            <div class="card-header">
+                                <i class="fas fa-chart-line"></i>
+                                <h3>长期发展</h3>
+                            </div>
+                            <div class="suggestion-items">
+                                <div class="suggestion-item">
+                                    <div class="suggestion-content">
+                                        <h4>培养创新思维能力</h4>
+                                        <p>参与数学建模活动，尝试一题多解的训练方法</p>
+                                    </div>
+                                    <div class="suggestion-action">
+                                        <button class="btn btn-sm btn-secondary">了解详情</button>
+                                    </div>
+                                </div>
+                                <div class="suggestion-item">
+                                    <div class="suggestion-content">
+                                        <h4>发展合作学习技能</h4>
+                                        <p>参与小组学习讨论，提升沟通表达和团队协作能力</p>
+                                    </div>
+                                    <div class="suggestion-action">
+                                        <button class="btn btn-sm btn-secondary">加入小组</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ai-personalized-plan">
+                        <div class="plan-header">
+                            <div class="ai-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3>AI个性化学习计划</h3>
+                        </div>
+                        <div class="plan-content">
+                            <div class="plan-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-date">第1-2周</div>
+                                    <div class="timeline-content">
+                                        <h4>计算能力强化</h4>
+                                        <p>每日完成计算专项训练，重点关注三角函数和复数运算</p>
+                                        <div class="timeline-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-date">第3-4周</div>
+                                    <div class="timeline-content">
+                                        <h4>概念理解深化</h4>
+                                        <p>系统复习统计概念，完成相关应用题练习</p>
+                                        <div class="timeline-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-date">第5-6周</div>
+                                    <div class="timeline-content">
+                                        <h4>综合能力提升</h4>
+                                        <p>练习综合应用题，提升解题方法选择和创新思维</p>
+                                        <div class="timeline-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 图表初始化脚本 -->
+    <script>
+        // 数学能力雷达图
+        const mathCtx = document.getElementById('mathRadarChart').getContext('2d');
+        new Chart(mathCtx, {
+            type: 'radar',
+            data: {
+                labels: ['计算能力', '逻辑推理', '空间想象', '数据分析', '问题解决', '创新思维'],
+                datasets: [{
+                    data: [95, 92, 85, 88, 90, 75],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { r: { beginAtZero: true, max: 100 } }
+            }
+        });
+
+        // 英语能力雷达图
+        const englishCtx = document.getElementById('englishRadarChart').getContext('2d');
+        new Chart(englishCtx, {
+            type: 'radar',
+            data: {
+                labels: ['词汇掌握', '语法运用', '阅读理解', '写作表达', '听力理解', '口语交流'],
+                datasets: [{
+                    data: [82, 75, 70, 68, 72, 65],
+                    borderColor: '#f093fb',
+                    backgroundColor: 'rgba(240, 147, 251, 0.2)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { r: { beginAtZero: true, max: 100 } }
+            }
+        });
+
+        // 物理能力雷达图
+        const physicsCtx = document.getElementById('physicsRadarChart').getContext('2d');
+        new Chart(physicsCtx, {
+            type: 'radar',
+            data: {
+                labels: ['概念理解', '实验设计', '应用计算', '图表分析', '推理论证', '创新应用'],
+                datasets: [{
+                    data: [90, 85, 88, 82, 86, 78],
+                    borderColor: '#4facfe',
+                    backgroundColor: 'rgba(79, 172, 254, 0.2)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { r: { beginAtZero: true, max: 100 } }
+            }
+        });
+
+        // 考试趋势图
+        const trendCtx = document.getElementById('examTrendChart').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['第1次月考', '第2次月考', '期中考试', '第3次月考', '第4次月考'],
+                datasets: [{
+                    label: '数学',
+                    data: [88, 90, 93, 95, 95],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderWidth: 3,
+                    fill: false
+                }, {
+                    label: '英语',
+                    data: [68, 72, 75, 78, 76],
+                    borderColor: '#f093fb',
+                    backgroundColor: 'rgba(240, 147, 251, 0.1)',
+                    borderWidth: 3,
+                    fill: false
+                }, {
+                    label: '物理',
+                    data: [82, 85, 87, 88, 88],
+                    borderColor: '#4facfe',
+                    backgroundColor: 'rgba(79, 172, 254, 0.1)',
+                    borderWidth: 3,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 60,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 错误类型饼图
+        const errorCtx = document.getElementById('errorTypesChart').getContext('2d');
+        new Chart(errorCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['计算错误', '概念理解', '方法选择', '格式问题'],
+                datasets: [{
+                    data: [35, 28, 22, 15],
+                    backgroundColor: ['#e74c3c', '#f39c12', '#3498db', '#95a5a6'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // 学习风格雷达图
+        const styleCtx = document.getElementById('learningStyleChart').getContext('2d');
+        new Chart(styleCtx, {
+            type: 'radar',
+            data: {
+                labels: ['视觉学习', '听觉学习', '动手实践', '逻辑分析', '合作学习', '独立学习'],
+                datasets: [{
+                    data: [85, 65, 70, 90, 60, 88],
+                    borderColor: '#27ae60',
+                    backgroundColor: 'rgba(39, 174, 96, 0.2)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { r: { beginAtZero: true, max: 100 } }
+            }
+        });
+    </script>
+</body>
+</html>

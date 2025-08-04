@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高一(1)班详情 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="classes-detail.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item active">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-users"></i>
+                班级管理
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/classes/list" class="sidebar-nav-item">
+                <i class="fas fa-list"></i>
+                <span>班级列表</span>
+            </a>
+            <a href="/classes/detail" class="sidebar-nav-item active">
+                <i class="fas fa-info-circle"></i>
+                <span>班级详情</span>
+            </a>
+            <a href="/classes/students" class="sidebar-nav-item">
+                <i class="fas fa-user-graduate"></i>
+                <span>学生管理</span>
+            </a>
+            <a href="/classes/reports" class="sidebar-nav-item">
+                <i class="fas fa-chart-pie"></i>
+                <span>班级报告</span>
+            </a>
+        </nav>
+
+        <!-- 班级信息卡片 -->
+        <div class="sidebar-class-info">
+            <h3>班级信息</h3>
+            <div class="class-info-card">
+                <div class="class-header">
+                    <div class="class-name">高一(1)班</div>
+                    <div class="class-rank rank-1">
+                        <i class="fas fa-trophy"></i>
+                        <span>年级第1名</span>
+                    </div>
+                </div>
+                <div class="class-details">
+                    <div class="detail-item">
+                        <i class="fas fa-user-tie"></i>
+                        <span>班主任：张老师</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-users"></i>
+                        <span>学生人数：45人</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>平均分：85.2分</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-percentage"></i>
+                        <span>及格率：95%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速统计 -->
+        <div class="sidebar-stats">
+            <h3>快速统计</h3>
+            <div class="stat-card-mini">
+                <div class="stat-icon excellent">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">优秀学生</div>
+                </div>
+            </div>
+            <div class="stat-card-mini">
+                <div class="stat-icon attention">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">需要关注</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>班级管理</span>
+            <i class="fas fa-chevron-right"></i>
+            <a href="/classes/list">班级列表</a>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">高一(1)班详情</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>高一(1)班详情</h1>
+                <div class="header-subtitle">
+                    管理班级基本信息、学生档案和成绩统计
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    返回列表
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    导出班级信息
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-edit"></i>
+                    编辑班级
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    添加学生
+                </button>
+            </div>
+        </div>
+
+        <!-- 班级信息编辑区 -->
+        <div class="class-info-section">
+            <div class="info-header">
+                <h2>班级基本信息</h2>
+                <button class="btn btn-secondary btn-sm edit-info-btn">
+                    <i class="fas fa-edit"></i>
+                    编辑信息
+                </button>
+            </div>
+            
+            <div class="info-content">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>班级名称</label>
+                        <div class="info-value">高一(1)班</div>
+                        <input type="text" class="info-input" value="高一(1)班" style="display: none;">
+                    </div>
+                    <div class="info-item">
+                        <label>年级</label>
+                        <div class="info-value">高一年级</div>
+                        <select class="info-select" style="display: none;">
+                            <option value="grade1" selected>高一年级</option>
+                            <option value="grade2">高二年级</option>
+                            <option value="grade3">高三年级</option>
+                        </select>
+                    </div>
+                    <div class="info-item">
+                        <label>班主任</label>
+                        <div class="info-value">张老师</div>
+                        <select class="info-select" style="display: none;">
+                            <option value="teacher1" selected>张老师</option>
+                            <option value="teacher2">李老师</option>
+                            <option value="teacher3">王老师</option>
+                        </select>
+                    </div>
+                    <div class="info-item">
+                        <label>学生人数</label>
+                        <div class="info-value">45人</div>
+                        <input type="number" class="info-input" value="45" style="display: none;">
+                    </div>
+                    <div class="info-item">
+                        <label>教室位置</label>
+                        <div class="info-value">教学楼A栋201</div>
+                        <input type="text" class="info-input" value="教学楼A栋201" style="display: none;">
+                    </div>
+                    <div class="info-item">
+                        <label>建班时间</label>
+                        <div class="info-value">2024年9月1日</div>
+                        <input type="date" class="info-input" value="2024-09-01" style="display: none;">
+                    </div>
+                </div>
+                
+                <div class="info-actions" style="display: none;">
+                    <button class="btn btn-secondary btn-sm cancel-edit-btn">取消</button>
+                    <button class="btn btn-primary btn-sm save-edit-btn">保存</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 班级统计数据 -->
+        <div class="class-statistics">
+            <div class="statistics-header">
+                <h2>统计数据</h2>
+                <div class="time-selector">
+                    <select class="filter-select">
+                        <option value="current">本学期</option>
+                        <option value="last">上学期</option>
+                        <option value="year">本年度</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="statistics-grid">
+                <div class="stat-card excellent">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">85.2</div>
+                        <div class="stat-unit">分</div>
+                        <div class="stat-label">班级平均分</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>比上次提高3.5分</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card excellent">
+                    <div class="stat-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">95</div>
+                        <div class="stat-unit">%</div>
+                        <div class="stat-label">及格率</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>提高5%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card good">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">1</div>
+                        <div class="stat-unit">名</div>
+                        <div class="stat-label">年级排名</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>上升1名</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card attention">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">3</div>
+                        <div class="stat-unit">人</div>
+                        <div class="stat-label">需要关注</div>
+                        <div class="stat-change neutral">
+                            <i class="fas fa-minus"></i>
+                            <span>与上次持平</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 历史成绩趋势 -->
+        <div class="grade-trends">
+            <div class="trends-header">
+                <h2>历史成绩趋势</h2>
+                <div class="trends-controls">
+                    <div class="subject-tabs">
+                        <button class="subject-tab active" data-subject="all">全部科目</button>
+                        <button class="subject-tab" data-subject="math">数学</button>
+                        <button class="subject-tab" data-subject="english">英语</button>
+                        <button class="subject-tab" data-subject="physics">物理</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="trends-content">
+                <div class="chart-container">
+                    <canvas id="gradeTrendsChart" width="800" height="300"></canvas>
+                </div>
+                
+                <div class="trends-summary">
+                    <div class="summary-item positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>平均分趋势</span>
+                        <strong>持续上升</strong>
+                    </div>
+                    <div class="summary-item excellent">
+                        <i class="fas fa-star"></i>
+                        <span>最佳表现</span>
+                        <strong>数学 92.3分</strong>
+                    </div>
+                    <div class="summary-item attention">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>需要关注</span>
+                        <strong>英语有波动</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 学生列表管理 -->
+        <div class="students-management">
+            <div class="students-header">
+                <h2>学生列表管理</h2>
+                <div class="students-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="搜索学生姓名或学号...">
+                    </div>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-download"></i>
+                        导出列表
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-upload"></i>
+                        批量导入
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-user-plus"></i>
+                        添加学生
+                    </button>
+                </div>
+            </div>
+
+            <!-- 批量操作栏 -->
+            <div class="batch-operations">
+                <div class="batch-info">
+                    <label class="batch-checkbox">
+                        <input type="checkbox" id="selectAll">
+                        <span class="checkmark"></span>
+                    </label>
+                    <span>已选择 <strong id="selectedCount">0</strong> 名学生</span>
+                </div>
+                <div class="batch-actions">
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-envelope"></i>
+                        发送通知
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                        <i class="fas fa-file-export"></i>
+                        批量导出
+                    </button>
+                    <button class="btn btn-warning btn-sm">
+                        <i class="fas fa-trash"></i>
+                        批量删除
+                    </button>
+                </div>
+            </div>
+
+            <!-- 学生表格 -->
+            <div class="students-table-container">
+                <div class="table-wrapper">
+                    <table class="students-table">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-col">
+                                    <label class="table-checkbox">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </th>
+                                <th class="sortable" data-sort="name">
+                                    <span>姓名</span>
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th class="sortable" data-sort="student-id">
+                                    <span>学号</span>
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th>性别</th>
+                                <th>联系电话</th>
+                                <th class="sortable" data-sort="average">
+                                    <span>平均分</span>
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th class="sortable" data-sort="rank">
+                                    <span>班级排名</span>
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="student-row excellent">
+                                <td>
+                                    <label class="table-checkbox">
+                                        <input type="checkbox" class="student-checkbox" data-student-id="2025001">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="student-info">
+                                        <div class="student-avatar">
+                                            <img src="https://via.placeholder.com/32x32/667eea/ffffff?text=张三" alt="张三">
+                                        </div>
+                                        <div class="student-details">
+                                            <div class="student-name">张三</div>
+                                            <div class="student-tag excellent">优秀学生</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>2025001</td>
+                                <td>男</td>
+                                <td>138****1234</td>
+                                <td>
+                                    <div class="average-score excellent">
+                                        <span class="score-value">92.5</span>
+                                        <span class="score-trend positive">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="class-rank rank-1">
+                                        <span class="rank-number">1</span>
+                                        <i class="fas fa-medal"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge active">正常</span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" title="编辑信息">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon" title="学情分析">
+                                            <i class="fas fa-chart-line"></i>
+                                        </button>
+                                        <button class="btn-icon" title="更多操作">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="student-row good">
+                                <td>
+                                    <label class="table-checkbox">
+                                        <input type="checkbox" class="student-checkbox" data-student-id="2025002">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="student-info">
+                                        <div class="student-avatar">
+                                            <img src="https://via.placeholder.com/32x32/3498db/ffffff?text=李四" alt="李四">
+                                        </div>
+                                        <div class="student-details">
+                                            <div class="student-name">李四</div>
+                                            <div class="student-tag good">良好</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>2025002</td>
+                                <td>女</td>
+                                <td>139****5678</td>
+                                <td>
+                                    <div class="average-score good">
+                                        <span class="score-value">87.3</span>
+                                        <span class="score-trend positive">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="class-rank rank-2">
+                                        <span class="rank-number">2</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge active">正常</span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" title="编辑信息">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon" title="学情分析">
+                                            <i class="fas fa-chart-line"></i>
+                                        </button>
+                                        <button class="btn-icon" title="更多操作">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="student-row average">
+                                <td>
+                                    <label class="table-checkbox">
+                                        <input type="checkbox" class="student-checkbox" data-student-id="2025003">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="student-info">
+                                        <div class="student-avatar">
+                                            <img src="https://via.placeholder.com/32x32/f39c12/ffffff?text=王五" alt="王五">
+                                        </div>
+                                        <div class="student-details">
+                                            <div class="student-name">王五</div>
+                                            <div class="student-tag average">中等</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>2025003</td>
+                                <td>男</td>
+                                <td>137****9012</td>
+                                <td>
+                                    <div class="average-score average">
+                                        <span class="score-value">78.9</span>
+                                        <span class="score-trend neutral">
+                                            <i class="fas fa-minus"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="class-rank">
+                                        <span class="rank-number">15</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge active">正常</span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" title="编辑信息">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon" title="学情分析">
+                                            <i class="fas fa-chart-line"></i>
+                                        </button>
+                                        <button class="btn-icon" title="更多操作">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="student-row attention">
+                                <td>
+                                    <label class="table-checkbox">
+                                        <input type="checkbox" class="student-checkbox" data-student-id="2025004">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="student-info">
+                                        <div class="student-avatar">
+                                            <img src="https://via.placeholder.com/32x32/e74c3c/ffffff?text=赵六" alt="赵六">
+                                        </div>
+                                        <div class="student-details">
+                                            <div class="student-name">赵六</div>
+                                            <div class="student-tag attention">需要关注</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>2025004</td>
+                                <td>女</td>
+                                <td>136****3456</td>
+                                <td>
+                                    <div class="average-score attention">
+                                        <span class="score-value">65.2</span>
+                                        <span class="score-trend negative">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="class-rank attention">
+                                        <span class="rank-number">42</span>
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge attention">需关注</span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" title="编辑信息">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon attention" title="重点关注">
+                                            <i class="fas fa-flag"></i>
+                                        </button>
+                                        <button class="btn-icon" title="更多操作">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- 更多学生记录... -->
+                            <tr class="student-row good">
+                                <td>
+                                    <label class="table-checkbox">
+                                        <input type="checkbox" class="student-checkbox" data-student-id="2025005">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="student-info">
+                                        <div class="student-avatar">
+                                            <img src="https://via.placeholder.com/32x32/27ae60/ffffff?text=钱七" alt="钱七">
+                                        </div>
+                                        <div class="student-details">
+                                            <div class="student-name">钱七</div>
+                                            <div class="student-tag good">良好</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>2025005</td>
+                                <td>男</td>
+                                <td>135****7890</td>
+                                <td>
+                                    <div class="average-score good">
+                                        <span class="score-value">83.7</span>
+                                        <span class="score-trend positive">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="class-rank">
+                                        <span class="rank-number">8</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge active">正常</span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-icon" title="编辑信息">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-icon" title="学情分析">
+                                            <i class="fas fa-chart-line"></i>
+                                        </button>
+                                        <button class="btn-icon" title="更多操作">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 分页组件 -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    显示第 1-10 条，共 45 名学生
+                </div>
+                <div class="pagination">
+                    <button class="page-btn" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                        上一页
+                    </button>
+                    <div class="page-numbers">
+                        <button class="page-number active">1</button>
+                        <button class="page-number">2</button>
+                        <button class="page-number">3</button>
+                        <button class="page-number">4</button>
+                        <button class="page-number">5</button>
+                    </div>
+                    <button class="page-btn">
+                        下一页
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="page-size-selector">
+                    每页显示：
+                    <select>
+                        <option value="10" selected>10条</option>
+                        <option value="20">20条</option>
+                        <option value="50">50条</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 添加学生模态框 -->
+    <div class="modal" id="addStudentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加学生</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>学生姓名</label>
+                    <input type="text" class="form-input" placeholder="请输入学生姓名">
+                </div>
+                <div class="form-group">
+                    <label>学号</label>
+                    <input type="text" class="form-input" placeholder="请输入学号">
+                </div>
+                <div class="form-group">
+                    <label>性别</label>
+                    <select class="form-select">
+                        <option value="">请选择性别</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>联系电话</label>
+                    <input type="tel" class="form-input" placeholder="请输入联系电话">
+                </div>
+                <div class="form-group">
+                    <label>家长联系方式</label>
+                    <input type="tel" class="form-input" placeholder="请输入家长联系方式">
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <textarea class="form-textarea" placeholder="其他信息（可选）"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary">取消</button>
+                <button class="btn btn-primary">添加学生</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图表初始化脚本 -->
+    <script>
+        // 历史成绩趋势图
+        const trendsCtx = document.getElementById('gradeTrendsChart').getContext('2d');
+        new Chart(trendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['第1次月考', '第2次月考', '期中考试', '第3次月考', '第4次月考', '期末考试'],
+                datasets: [{
+                    label: '数学',
+                    data: [82, 84, 87, 89, 91, 92],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4
+                }, {
+                    label: '英语',
+                    data: [75, 77, 78, 76, 79, 81],
+                    borderColor: '#f093fb',
+                    backgroundColor: 'rgba(240, 147, 251, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4
+                }, {
+                    label: '物理',
+                    data: [78, 80, 82, 84, 85, 87],
+                    borderColor: '#4facfe',
+                    backgroundColor: 'rgba(79, 172, 254, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 70,
+                        max: 95
+                    }
+                }
+            }
+        });
+
+        // 编辑班级信息功能
+        document.querySelector('.edit-info-btn').addEventListener('click', function() {
+            const infoValues = document.querySelectorAll('.info-value');
+            const infoInputs = document.querySelectorAll('.info-input, .info-select');
+            const infoActions = document.querySelector('.info-actions');
+            
+            infoValues.forEach(el => el.style.display = 'none');
+            infoInputs.forEach(el => el.style.display = 'block');
+            infoActions.style.display = 'flex';
+            this.style.display = 'none';
+        });
+
+        document.querySelector('.cancel-edit-btn').addEventListener('click', function() {
+            const infoValues = document.querySelectorAll('.info-value');
+            const infoInputs = document.querySelectorAll('.info-input, .info-select');
+            const infoActions = document.querySelector('.info-actions');
+            const editBtn = document.querySelector('.edit-info-btn');
+            
+            infoValues.forEach(el => el.style.display = 'block');
+            infoInputs.forEach(el => el.style.display = 'none');
+            infoActions.style.display = 'none';
+            editBtn.style.display = 'inline-flex';
+        });
+    </script>
+</body>
+</html>
