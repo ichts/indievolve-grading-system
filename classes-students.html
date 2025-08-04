@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生信息管理 - AI智能阅卷系统</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="papers-list.css">
+    <link rel="stylesheet" href="classes-students.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-navbar">
+        <div class="navbar-left">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>AI智能阅卷系统</span>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="/dashboard" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="/papers" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="/grading" class="nav-item">
+                <i class="fas fa-clipboard-check"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="/scores" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="/analysis" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="/classes" class="nav-item active">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="/settings" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </nav>
+        
+        <div class="navbar-right">
+            <div class="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/32x32" alt="用户头像" class="avatar">
+                <span class="username">张老师</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 侧边栏导航 -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>
+                <i class="fas fa-users"></i>
+                班级管理
+            </h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/classes/list" class="sidebar-nav-item">
+                <i class="fas fa-list"></i>
+                <span>班级列表</span>
+            </a>
+            <a href="/classes/detail" class="sidebar-nav-item">
+                <i class="fas fa-info-circle"></i>
+                <span>班级详情</span>
+            </a>
+            <a href="/classes/students" class="sidebar-nav-item active">
+                <i class="fas fa-user-graduate"></i>
+                <span>学生管理</span>
+            </a>
+            <a href="/classes/reports" class="sidebar-nav-item">
+                <i class="fas fa-chart-pie"></i>
+                <span>班级报告</span>
+            </a>
+        </nav>
+
+        <!-- 快速导航 -->
+        <div class="sidebar-quick-nav">
+            <h3>快速导航</h3>
+            <div class="quick-nav-item">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回班级详情</span>
+            </div>
+            <div class="quick-nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>学情分析</span>
+            </div>
+            <div class="quick-nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>查看答卷</span>
+            </div>
+        </div>
+
+        <!-- 学生基本信息卡片 -->
+        <div class="sidebar-student-info">
+            <h3>学生信息</h3>
+            <div class="student-info-card">
+                <div class="student-avatar-section">
+                    <img src="https://via.placeholder.com/60x60" alt="学生头像" class="student-avatar-large">
+                    <div class="student-basic">
+                        <div class="student-name">张小明</div>
+                        <div class="student-id">学号: 2024001</div>
+                    </div>
+                </div>
+                <div class="student-quick-stats">
+                    <div class="quick-stat">
+                        <span class="stat-label">班级</span>
+                        <span class="stat-value">高一(1)班</span>
+                    </div>
+                    <div class="quick-stat">
+                        <span class="stat-label">排名</span>
+                        <span class="stat-value">5/45</span>
+                    </div>
+                    <div class="quick-stat">
+                        <span class="stat-label">平均分</span>
+                        <span class="stat-value">85.2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <main class="main-content with-sidebar">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <i class="fas fa-home"></i>
+            <span>工作台</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>班级管理</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>高一(1)班</span>
+            <i class="fas fa-chevron-right"></i>
+            <span class="current">张小明</span>
+        </div>
+
+        <!-- 页面标题和操作区 -->
+        <div class="page-header">
+            <div class="header-left">
+                <h1>学生信息管理</h1>
+                <div class="header-subtitle">
+                    管理学生基本信息、学习档案和成绩分析
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-print"></i>
+                    打印档案
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    导出数据
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-edit"></i>
+                    编辑信息
+                </button>
+            </div>
+        </div>
+
+        <!-- 学生基本信息 -->
+        <div class="student-profile-section">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="https://via.placeholder.com/120x120" alt="学生头像" class="avatar-large">
+                    <button class="avatar-upload">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+                <div class="profile-info">
+                    <h2 class="student-name">张小明</h2>
+                    <div class="student-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-id-card"></i>
+                            学号: 2024001
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-school"></i>
+                            高一(1)班
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            入学时间: 2024年9月
+                        </span>
+                    </div>
+                    <div class="student-tags">
+                        <span class="tag excellent">优秀学生</span>
+                        <span class="tag math">数学特长</span>
+                        <span class="tag leader">班干部</span>
+                    </div>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">班级排名</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">85.2</div>
+                        <div class="stat-label">平均分</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">出勤率</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 标签页导航 -->
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-btn active" data-tab="basic">
+                    <i class="fas fa-user"></i>
+                    基本信息
+                </button>
+                <button class="tab-btn" data-tab="academic">
+                    <i class="fas fa-graduation-cap"></i>
+                    学习档案
+                </button>
+                <button class="tab-btn" data-tab="scores">
+                    <i class="fas fa-chart-bar"></i>
+                    成绩分析
+                </button>
+                <button class="tab-btn" data-tab="errors">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    错题统计
+                </button>
+                <button class="tab-btn" data-tab="history">
+                    <i class="fas fa-history"></i>
+                    操作记录
+                </button>
+            </div>
+
+            <!-- 基本信息标签页 -->
+            <div class="tab-content active" id="basic">
+                <div class="info-sections">
+                    <div class="info-section">
+                        <div class="section-header">
+                            <h3>
+                                <i class="fas fa-user"></i>
+                                个人信息
+                            </h3>
+                            <button class="edit-toggle" onclick="toggleEdit('personal')">
+                                <i class="fas fa-edit"></i>
+                                编辑
+                            </button>
+                        </div>
+                        <div class="info-grid" id="personal-info">
+                            <div class="info-item">
+                                <label>姓名</label>
+                                <div class="info-value">张小明</div>
+                                <input type="text" class="info-input" value="张小明" style="display: none;">
+                            </div>
+                            <div class="info-item">
+                                <label>性别</label>
+                                <div class="info-value">男</div>
+                                <select class="info-input" style="display: none;">
+                                    <option value="男" selected>男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </div>
+                            <div class="info-item">
+                                <label>出生日期</label>
+                                <div class="info-value">2008年3月15日</div>
+                                <input type="date" class="info-input" value="2008-03-15" style="display: none;">
+                            </div>
+                            <div class="info-item">
+                                <label>身份证号</label>
+                                <div class="info-value">110101200803150001</div>
+                                <input type="text" class="info-input" value="110101200803150001" style="display: none;">
+                            </div>
+                            <div class="info-item">
+                                <label>联系电话</label>
+                                <div class="info-value">13800138000</div>
+                                <input type="tel" class="info-input" value="13800138000" style="display: none;">
+                            </div>
+                            <div class="info-item">
+                                <label>家庭住址</label>
+                                <div class="info-value">北京市朝阳区XXX街道XXX号</div>
+                                <input type="text" class="info-input" value="北京市朝阳区XXX街道XXX号" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="edit-actions" id="personal-actions">
+                            <button class="btn btn-secondary" onclick="cancelEdit('personal')">取消</button>
+                            <button class="btn btn-primary" onclick="saveEdit('personal')">保存</button>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <div class="section-header">
+                            <h3>
+                                <i class="fas fa-school"></i>
+                                学籍信息
+                            </h3>
+                            <button class="edit-toggle" onclick="toggleEdit('academic')">
+                                <i class="fas fa-edit"></i>
+                                编辑
+                            </button>
+                        </div>
+                        <div class="info-grid" id="academic-info">
+                            <div class="info-item">
+                                <label>学号</label>
+                                <div class="info-value">2024001</div>
+                                <input type="text" class="info-input" value="2024001" style="display: none;">
+                            </div>
+                            <div class="info-item">
+                                <label>班级</label>
+                                <div class="info-value">高一(1)班</div>
+                                <select class="info-input" style="display: none;">
+                                    <option value="高一(1)班" selected>高一(1)班</option>
+                                    <option value="高一(2)班">高一(2)班</option>
+                                    <option value="高一(3)班">高一(3)班</option>
+                                </select>
+                            </div>
+                            <div class="info-item">
+                                <label>入学时间</label>
+                                <div class="info-value">2024年9月1日</div>
+                                <input type="date" class="info-input" value="2024-09-01" style="display: none;">
+                            </div>
+                            <div class="info-item">
+                                <label>学生状态</label>
+                                <div class="info-value">在读</div>
+                                <select class="info-input" style="display: none;">
+                                    <option value="在读" selected>在读</option>
+                                    <option value="休学">休学</option>
+                                    <option value="转学">转学</option>
+                                    <option value="退学">退学</option>
+                                </select>
+                            </div>
+                            <div class="info-item">
+                                <label>住宿情况</label>
+                                <div class="info-value">走读</div>
+                                <select class="info-input" style="display: none;">
+                                    <option value="走读" selected>走读</option>
+                                    <option value="住校">住校</option>
+                                </select>
+                            </div>
+                            <div class="info-item">
+                                <label>特长爱好</label>
+                                <div class="info-value">数学、篮球、绘画</div>
+                                <input type="text" class="info-input" value="数学、篮球、绘画" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="edit-actions" id="academic-actions">
+                            <button class="btn btn-secondary" onclick="cancelEdit('academic')">取消</button>
+                            <button class="btn btn-primary" onclick="saveEdit('academic')">保存</button>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <div class="section-header">
+                            <h3>
+                                <i class="fas fa-users"></i>
+                                家庭信息
+                            </h3>
+                            <button class="edit-toggle" onclick="toggleEdit('family')">
+                                <i class="fas fa-edit"></i>
+                                编辑
+                            </button>
+                        </div>
+                        <div class="family-members" id="family-info">
+                            <div class="family-member">
+                                <div class="member-header">
+                                    <h4>父亲</h4>
+                                </div>
+                                <div class="member-info">
+                                    <div class="info-item">
+                                        <label>姓名</label>
+                                        <div class="info-value">张建国</div>
+                                        <input type="text" class="info-input" value="张建国" style="display: none;">
+                                    </div>
+                                    <div class="info-item">
+                                        <label>职业</label>
+                                        <div class="info-value">工程师</div>
+                                        <input type="text" class="info-input" value="工程师" style="display: none;">
+                                    </div>
+                                    <div class="info-item">
+                                        <label>联系电话</label>
+                                        <div class="info-value">13900139000</div>
+                                        <input type="tel" class="info-input" value="13900139000" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="family-member">
+                                <div class="member-header">
+                                    <h4>母亲</h4>
+                                </div>
+                                <div class="member-info">
+                                    <div class="info-item">
+                                        <label>姓名</label>
+                                        <div class="info-value">李美华</div>
+                                        <input type="text" class="info-input" value="李美华" style="display: none;">
+                                    </div>
+                                    <div class="info-item">
+                                        <label>职业</label>
+                                        <div class="info-value">教师</div>
+                                        <input type="text" class="info-input" value="教师" style="display: none;">
+                                    </div>
+                                    <div class="info-item">
+                                        <label>联系电话</label>
+                                        <div class="info-value">13800138001</div>
+                                        <input type="tel" class="info-input" value="13800138001" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="edit-actions" id="family-actions">
+                            <button class="btn btn-secondary" onclick="cancelEdit('family')">取消</button>
+                            <button class="btn btn-primary" onclick="saveEdit('family')">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 学习档案标签页 -->
+            <div class="tab-content" id="academic">
+                <div class="academic-overview">
+                    <div class="overview-cards">
+                        <div class="overview-card">
+                            <div class="card-icon math">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">数学能力</div>
+                                <div class="card-value excellent">优秀</div>
+                                <div class="card-detail">平均分: 92.5</div>
+                            </div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="card-icon english">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">英语能力</div>
+                                <div class="card-value good">良好</div>
+                                <div class="card-detail">平均分: 78.2</div>
+                            </div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="card-icon learning">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">学习态度</div>
+                                <div class="card-value excellent">积极</div>
+                                <div class="card-detail">出勤率: 98%</div>
+                            </div>
+                        </div>
+                        <div class="overview-card">
+                            <div class="card-icon progress">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">进步趋势</div>
+                                <div class="card-value positive">上升</div>
+                                <div class="card-detail">提升: +5.3分</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="academic-sections">
+                    <div class="academic-section">
+                        <h3>
+                            <i class="fas fa-trophy"></i>
+                            学习成就
+                        </h3>
+                        <div class="achievements-list">
+                            <div class="achievement-item">
+                                <div class="achievement-icon gold">
+                                    <i class="fas fa-medal"></i>
+                                </div>
+                                <div class="achievement-content">
+                                    <div class="achievement-title">数学竞赛一等奖</div>
+                                    <div class="achievement-date">2024年3月</div>
+                                    <div class="achievement-desc">在全市高中数学竞赛中获得一等奖</div>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon silver">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                                <div class="achievement-content">
+                                    <div class="achievement-title">优秀学生干部</div>
+                                    <div class="achievement-date">2024年1月</div>
+                                    <div class="achievement-desc">连续两学期担任班长，表现优秀</div>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon bronze">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="achievement-content">
+                                    <div class="achievement-title">三好学生</div>
+                                    <div class="achievement-date">2023年12月</div>
+                                    <div class="achievement-desc">德智体美劳全面发展</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="academic-section">
+                        <h3>
+                            <i class="fas fa-clipboard-list"></i>
+                            学习评价
+                        </h3>
+                        <div class="evaluations-list">
+                            <div class="evaluation-item">
+                                <div class="evaluation-header">
+                                    <div class="evaluator">班主任 - 张老师</div>
+                                    <div class="evaluation-date">2024年2月</div>
+                                </div>
+                                <div class="evaluation-content">
+                                    该生学习态度端正，上课认真听讲，积极参与课堂讨论。数学成绩优异，逻辑思维能力强。担任班长期间，工作认真负责，深受同学们信任。建议继续保持良好的学习习惯，加强英语学习。
+                                </div>
+                                <div class="evaluation-tags">
+                                    <span class="tag positive">学习认真</span>
+                                    <span class="tag positive">数学优秀</span>
+                                    <span class="tag neutral">英语待提高</span>
+                                </div>
+                            </div>
+                            <div class="evaluation-item">
+                                <div class="evaluation-header">
+                                    <div class="evaluator">数学老师 - 李老师</div>
+                                    <div class="evaluation-date">2024年1月</div>
+                                </div>
+                                <div class="evaluation-content">
+                                    数学基础扎实，解题思路清晰，经常能提出独特的解题方法。在数学竞赛中表现出色，具有很强的数学天赋。建议参加更高层次的数学竞赛。
+                                </div>
+                                <div class="evaluation-tags">
+                                    <span class="tag positive">数学天赋</span>
+                                    <span class="tag positive">思路清晰</span>
+                                    <span class="tag positive">竞赛潜质</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 成绩分析标签页 -->
+            <div class="tab-content" id="scores">
+                <div class="scores-overview">
+                    <div class="scores-summary">
+                        <div class="summary-item">
+                            <div class="summary-label">总平均分</div>
+                            <div class="summary-value">85.2</div>
+                            <div class="summary-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +3.5
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">班级排名</div>
+                            <div class="summary-value">5/45</div>
+                            <div class="summary-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +2
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">年级排名</div>
+                            <div class="summary-value">23/356</div>
+                            <div class="summary-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +8
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">强势科目</div>
+                            <div class="summary-value">数学</div>
+                            <div class="summary-detail">92.5分</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>成绩趋势分析</h3>
+                        <canvas id="studentTrendChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>学科能力雷达图</h3>
+                        <canvas id="studentRadarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="scores-detail">
+                    <h3>历次考试成绩</h3>
+                    <div class="scores-table-container">
+                        <table class="scores-table">
+                            <thead>
+                                <tr>
+                                    <th>考试名称</th>
+                                    <th>考试时间</th>
+                                    <th>总分</th>
+                                    <th>数学</th>
+                                    <th>英语</th>
+                                    <th>班级排名</th>
+                                    <th>年级排名</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>期末考试</td>
+                                    <td>2024年1月</td>
+                                    <td class="score excellent">510</td>
+                                    <td class="score excellent">95</td>
+                                    <td class="score good">82</td>
+                                    <td>3/45</td>
+                                    <td>15/356</td>
+                                    <td>
+                                        <button class="btn-link">查看详情</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>期中考试</td>
+                                    <td>2023年11月</td>
+                                    <td class="score good">485</td>
+                                    <td class="score excellent">90</td>
+                                    <td class="score average">75</td>
+                                    <td>7/45</td>
+                                    <td>31/356</td>
+                                    <td>
+                                        <button class="btn-link">查看详情</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>月考三</td>
+                                    <td>2023年10月</td>
+                                    <td class="score good">478</td>
+                                    <td class="score excellent">92</td>
+                                    <td class="score average">73</td>
+                                    <td>5/45</td>
+                                    <td>28/356</td>
+                                    <td>
+                                        <button class="btn-link">查看详情</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 错题统计标签页 -->
+            <div class="tab-content" id="errors">
+                <div class="errors-overview">
+                    <div class="error-stats">
+                        <div class="error-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">23</div>
+                                <div class="stat-label">总错题数</div>
+                            </div>
+                        </div>
+                        <div class="error-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-redo"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">15</div>
+                                <div class="stat-label">已订正</div>
+                            </div>
+                        </div>
+                        <div class="error-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">8</div>
+                                <div class="stat-label">待订正</div>
+                            </div>
+                        </div>
+                        <div class="error-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">65%</div>
+                                <div class="stat-label">订正率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="error-analysis">
+                    <div class="analysis-charts">
+                        <div class="chart-item">
+                            <h4>错题分布</h4>
+                            <canvas id="errorDistributionChart"></canvas>
+                        </div>
+                        <div class="chart-item">
+                            <h4>知识点错误率</h4>
+                            <canvas id="knowledgeErrorChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="error-details">
+                    <h3>错题详情</h3>
+                    <div class="error-filters">
+                        <select class="filter-select">
+                            <option value="">所有科目</option>
+                            <option value="math">数学</option>
+                            <option value="english">英语</option>
+                        </select>
+                        <select class="filter-select">
+                            <option value="">所有状态</option>
+                            <option value="corrected">已订正</option>
+                            <option value="pending">待订正</option>
+                        </select>
+                    </div>
+                    <div class="error-list">
+                        <div class="error-item">
+                            <div class="error-header">
+                                <div class="error-info">
+                                    <span class="subject-tag math">数学</span>
+                                    <span class="error-title">二次函数综合题</span>
+                                    <span class="error-date">2024年1月15日</span>
+                                </div>
+                                <div class="error-status corrected">已订正</div>
+                            </div>
+                            <div class="error-content">
+                                <div class="error-description">
+                                    题目：已知二次函数y=ax²+bx+c的图象经过点A(1,0)，B(3,0)，C(0,3)，求该函数的解析式。
+                                </div>
+                                <div class="error-reason">
+                                    错误原因：计算错误，将点C的坐标代入时出现符号错误
+                                </div>
+                                <div class="error-correction">
+                                    订正过程：重新代入点C(0,3)，得到c=3，再结合其他两点求解
+                                </div>
+                            </div>
+                        </div>
+                        <div class="error-item">
+                            <div class="error-header">
+                                <div class="error-info">
+                                    <span class="subject-tag english">英语</span>
+                                    <span class="error-title">时态语法题</span>
+                                    <span class="error-date">2024年1月10日</span>
+                                </div>
+                                <div class="error-status pending">待订正</div>
+                            </div>
+                            <div class="error-content">
+                                <div class="error-description">
+                                    题目：By the time you arrive, I _____ for two hours.
+                                </div>
+                                <div class="error-reason">
+                                    错误原因：对将来完成时的理解不够深入，选择了现在完成时
+                                </div>
+                                <div class="error-actions">
+                                    <button class="btn btn-primary btn-sm">开始订正</button>
+                                    <button class="btn btn-secondary btn-sm">查看解析</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作记录标签页 -->
+            <div class="tab-content" id="history">
+                <div class="history-filters">
+                    <div class="filter-group">
+                        <label>操作类型:</label>
+                        <select class="filter-select">
+                            <option value="">全部操作</option>
+                            <option value="info">信息修改</option>
+                            <option value="score">成绩录入</option>
+                            <option value="evaluation">评价添加</option>
+                            <option value="correction">错题订正</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>时间范围:</label>
+                        <select class="filter-select">
+                            <option value="">全部时间</option>
+                            <option value="today">今天</option>
+                            <option value="week">本周</option>
+                            <option value="month">本月</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="history-list">
+                    <div class="history-item">
+                        <div class="history-icon info">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="history-content">
+                            <div class="history-title">修改联系电话</div>
+                            <div class="history-detail">将联系电话从 138****8888 修改为 138****8000</div>
+                            <div class="history-meta">
+                                <span class="operator">操作人：张老师</span>
+                                <span class="time">2024年2月15日 14:30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-icon score">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="history-content">
+                            <div class="history-title">录入期末考试成绩</div>
+                            <div class="history-detail">数学：95分，英语：82分，总分：510分</div>
+                            <div class="history-meta">
+                                <span class="operator">操作人：李老师</span>
+                                <span class="time">2024年1月20日 09:15</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-icon evaluation">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="history-content">
+                            <div class="history-title">添加学习评价</div>
+                            <div class="history-detail">班主任添加了期末学习评价</div>
+                            <div class="history-meta">
+                                <span class="operator">操作人：张老师</span>
+                                <span class="time">2024年1月18日 16:45</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-icon correction">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="history-content">
+                            <div class="history-title">完成错题订正</div>
+                            <div class="history-detail">订正了数学二次函数综合题</div>
+                            <div class="history-meta">
+                                <span class="operator">操作人：张小明</span>
+                                <span class="time">2024年1月16日 19:20</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-item">
+                        <div class="history-icon info">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="history-content">
+                            <div class="history-title">创建学生档案</div>
+                            <div class="history-detail">初次录入学生基本信息</div>
+                            <div class="history-meta">
+                                <span class="operator">操作人：系统管理员</span>
+                                <span class="time">2023年9月1日 08:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="history-pagination">
+                    <div class="pagination-info">
+                        显示第 1-5 条，共 23 条记录
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="page-btn" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                            上一页
+                        </button>
+                        <div class="page-numbers">
+                            <button class="page-number active">1</button>
+                            <button class="page-number">2</button>
+                            <button class="page-number">3</button>
+                        </div>
+                        <button class="page-btn">
+                            下一页
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页面底部 -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <span>&copy; 2025 AI智能阅卷系统 - 让教学更智能</span>
+            <div class="footer-links">
+                <a href="/help">帮助中心</a>
+                <a href="/feedback">意见反馈</a>
+                <a href="/about">关于我们</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 标签页切换
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                
+                // 移除所有活动状态
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 添加当前标签的活动状态
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // 编辑功能
+        function toggleEdit(section) {
+            const infoDiv = document.getElementById(section + '-info');
+            const actionsDiv = document.getElementById(section + '-actions');
+            const toggleBtn = infoDiv.parentElement.querySelector('.edit-toggle');
+            
+            const isEditing = toggleBtn.classList.contains('active');
+            
+            if (isEditing) {
+                // 取消编辑
+                cancelEdit(section);
+            } else {
+                // 开始编辑
+                toggleBtn.classList.add('active');
+                toggleBtn.innerHTML = '<i class="fas fa-times"></i> 取消';
+                
+                infoDiv.querySelectorAll('.info-value').forEach(el => el.style.display = 'none');
+                infoDiv.querySelectorAll('.info-input').forEach(el => el.style.display = 'block');
+                
+                actionsDiv.classList.add('show');
+            }
+        }
+
+        function cancelEdit(section) {
+            const infoDiv = document.getElementById(section + '-info');
+            const actionsDiv = document.getElementById(section + '-actions');
+            const toggleBtn = infoDiv.parentElement.querySelector('.edit-toggle');
+            
+            toggleBtn.classList.remove('active');
+            toggleBtn.innerHTML = '<i class="fas fa-edit"></i> 编辑';
+            
+            infoDiv.querySelectorAll('.info-value').forEach(el => el.style.display = 'block');
+            infoDiv.querySelectorAll('.info-input').forEach(el => el.style.display = 'none');
+            
+            actionsDiv.classList.remove('show');
+        }
+
+        function saveEdit(section) {
+            // 这里应该发送数据到后端保存
+            console.log('保存', section, '的修改');
+            
+            // 模拟保存成功
+            cancelEdit(section);
+            
+            // 显示成功提示
+            showNotification('信息保存成功！', 'success');
+        }
+
+        function showNotification(message, type) {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                background: ${type === 'success' ? '#27ae60' : '#e74c3c'};
+                color: white;
+                border-radius: 6px;
+                z-index: 9999;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // 显示动画
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // 3秒后自动消失
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // 图表初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 成绩趋势图
+            const trendCtx = document.getElementById('studentTrendChart');
+            if (trendCtx) {
+                new Chart(trendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['9月', '10月', '11月', '12月', '1月'],
+                        datasets: [{
+                            label: '总分',
+                            data: [450, 478, 485, 492, 510],
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4
+                        }, {
+                            label: '数学',
+                            data: [85, 92, 90, 88, 95],
+                            borderColor: '#f39c12',
+                            backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                            tension: 0.4
+                        }, {
+                            label: '英语',
+                            data: [68, 73, 75, 78, 82],
+                            borderColor: '#27ae60',
+                            backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 学科能力雷达图
+            const radarCtx = document.getElementById('studentRadarChart');
+            if (radarCtx) {
+                new Chart(radarCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['逻辑思维', '计算能力', '空间想象', '语言表达', '阅读理解', '写作能力'],
+                        datasets: [{
+                            label: '能力水平',
+                            data: [90, 85, 88, 75, 78, 72],
+                            fill: true,
+                            backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                            borderColor: '#667eea',
+                            pointBackgroundColor: '#667eea'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 错题分布饼图
+            const errorDistCtx = document.getElementById('errorDistributionChart');
+            if (errorDistCtx) {
+                new Chart(errorDistCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['数学', '英语', '物理', '化学'],
+                        datasets: [{
+                            data: [12, 8, 2, 1],
+                            backgroundColor: ['#f39c12', '#27ae60', '#3498db', '#e74c3c']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+
+            // 知识点错误率柱图
+            const knowledgeErrorCtx = document.getElementById('knowledgeErrorChart');
+            if (knowledgeErrorCtx) {
+                new Chart(knowledgeErrorCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['二次函数', '时态语法', '立体几何', '化学平衡'],
+                        datasets: [{
+                            label: '错误率(%)',
+                            data: [25, 35, 15, 10],
+                            backgroundColor: ['#e74c3c', '#f39c12', '#27ae60', '#3498db']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 50
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

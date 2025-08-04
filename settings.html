@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统设置 - K12 AI智能阅卷系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="top-nav">
+        <div class="nav-brand">
+            <i class="fas fa-graduation-cap"></i>
+            <span>K12 AI智能阅卷系统</span>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>工作台</span>
+            </a>
+            <a href="papers-list.html" class="nav-item">
+                <i class="fas fa-file-alt"></i>
+                <span>试卷管理</span>
+            </a>
+            <a href="grading-tasks.html" class="nav-item">
+                <i class="fas fa-check-circle"></i>
+                <span>阅卷中心</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>成绩管理</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-analytics"></i>
+                <span>学情分析</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>班级管理</span>
+            </a>
+            <a href="settings.html" class="nav-item active">
+                <i class="fas fa-cog"></i>
+                <span>系统设置</span>
+            </a>
+        </div>
+        
+        <div class="nav-user">
+            <div class="user-info">
+                <i class="fas fa-bell notification-icon"></i>
+                <div class="user-profile">
+                    <img src="https://via.placeholder.com/32x32" alt="用户头像" class="user-avatar">
+                    <span class="user-name">张老师</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <div class="main-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>系统设置</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#profile" class="sidebar-item active" data-section="profile">
+                    <i class="fas fa-user"></i>
+                    <span>个人设置</span>
+                </a>
+                <a href="#scoring" class="sidebar-item" data-section="scoring">
+                    <i class="fas fa-star"></i>
+                    <span>评分标准配置</span>
+                </a>
+                <a href="#system" class="sidebar-item" data-section="system">
+                    <i class="fas fa-server"></i>
+                    <span>系统管理</span>
+                </a>
+            </nav>
+         </aside>
+
+        <!-- 内容区域 -->
+        <main class="main-content">
+            <!-- 面包屑导航 -->
+            <div class="breadcrumb">
+                <a href="index.html">首页</a>
+                <i class="fas fa-chevron-right"></i>
+                <span class="breadcrumb-current">系统设置</span>
+            </div>
+
+            <!-- 个人设置 -->
+            <section id="profile" class="settings-section active">
+                <div class="section-header">
+                    <h2>个人设置</h2>
+                    <p>管理您的个人信息和账户设置</p>
+                </div>
+
+                <div class="settings-cards">
+                    <!-- 基本信息 -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3>基本信息</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="profile-section">
+                                <div class="avatar-section">
+                                    <img src="https://via.placeholder.com/80x80" alt="头像" class="profile-avatar">
+                                    <button class="btn btn-secondary">更换头像</button>
+                                </div>
+                                <div class="info-form">
+                                    <div class="form-group">
+                                        <label>姓名</label>
+                                        <input type="text" value="张老师" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>邮箱</label>
+                                        <input type="email" value="zhang.teacher@school.edu.cn" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>手机号码</label>
+                                        <input type="tel" value="138****8888" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>所属学校</label>
+                                        <input type="text" value="XX市第一中学" class="form-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn btn-primary">保存更改</button>
+                                <button class="btn btn-secondary">取消</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 账户安全 -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3>账户安全</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <h4>登录密码</h4>
+                                    <p>定期更换密码有助于保护账户安全</p>
+                                </div>
+                                <button class="btn btn-outline">修改密码</button>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <h4>登录日志</h4>
+                                    <p>最近登录：2024-08-03 09:30</p>
+                                </div>
+                                <button class="btn btn-outline">查看详情</button>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-info">
+                                    <h4>两步验证</h4>
+                                    <p>为您的账户添加额外安全保护</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 系统偏好 -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3>系统偏好</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <h4>界面主题</h4>
+                                    <p>选择您喜欢的界面风格</p>
+                                </div>
+                                <select class="form-select">
+                                    <option value="light">浅色主题</option>
+                                    <option value="dark">深色主题</option>
+                                    <option value="auto">跟随系统</option>
+                                </select>
+                            </div>
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <h4>语言设置</h4>
+                                    <p>选择系统显示语言</p>
+                                </div>
+                                <select class="form-select">
+                                    <option value="zh-CN">简体中文</option>
+                                    <option value="en-US">English</option>
+                                </select>
+                            </div>
+                            <div class="preference-item">
+                                <div class="preference-info">
+                                    <h4>通知设置</h4>
+                                    <p>管理系统通知和提醒</p>
+                                </div>
+                                <div class="notification-options">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked>
+                                        <span>阅卷任务完成通知</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked>
+                                        <span>系统更新通知</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox">
+                                        <span>营销推广信息</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 评分标准配置 -->
+            <section id="scoring" class="settings-section">
+                <div class="section-header">
+                    <h2>评分标准配置</h2>
+                    <p>配置AI评分规则和评分标准模板</p>
+                </div>
+
+                <div class="settings-cards">
+                    <!-- 学科配置 -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3>学科评分配置</h3>
+                            <div class="subject-tabs">
+                                <button class="tab-btn active" data-subject="math">数学</button>
+                                <button class="tab-btn" data-subject="english">英语</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="subject-config active" data-subject="math">
+                                <div class="config-item">
+                                    <h4>解答题评分规则</h4>
+                                    <div class="config-options">
+                                        <div class="option-item">
+                                            <label>步骤分权重</label>
+                                            <input type="range" min="0" max="100" value="40" class="range-input">
+                                            <span class="range-value">40%</span>
+                                        </div>
+                                        <div class="option-item">
+                                            <label>答案分权重</label>
+                                            <input type="range" min="0" max="100" value="60" class="range-input">
+                                            <span class="range-value">60%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="config-item">
+                                    <h4>填空题评分规则</h4>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked>
+                                        <span>严格匹配答案格式</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox">
+                                        <span>允许同义表达</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="subject-config" data-subject="english">
+                                <div class="config-item">
+                                    <h4>作文评分规则</h4>
+                                    <div class="config-options">
+                                        <div class="option-item">
+                                            <label>内容分权重</label>
+                                            <input type="range" min="0" max="100" value="50" class="range-input">
+                                            <span class="range-value">50%</span>
+                                        </div>
+                                        <div class="option-item">
+                                            <label>语法分权重</label>
+                                            <input type="range" min="0" max="100" value="30" class="range-input">
+                                            <span class="range-value">30%</span>
+                                        </div>
+                                        <div class="option-item">
+                                            <label>词汇分权重</label>
+                                            <input type="range" min="0" max="100" value="20" class="range-input">
+                                            <span class="range-value">20%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI评分配置 -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3>AI评分配置</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="config-item">
+                                <div class="config-info">
+                                    <h4>置信度阈值</h4>
+                                    <p>低于此阈值的评分将转入人工复核</p>
+                                </div>
+                                <div class="threshold-config">
+                                    <input type="range" min="0" max="100" value="80" class="range-input">
+                                    <span class="range-value">80%</span>
+                                </div>
+                            </div>
+                            <div class="config-item">
+                                <div class="config-info">
+                                    <h4>自动复核规则</h4>
+                                    <p>设置需要人工确认的评分情况</p>
+                                </div>
+                                <div class="review-rules">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked>
+                                        <span>分数差异超过20%</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" checked>
+                                        <span>识别图片质量较差</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox">
+                                        <span>所有主观题评分</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 评分模板 -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3>评分模板管理</h3>
+                            <button class="btn btn-primary">新建模板</button>
+                        </div>
+                        <div class="card-content">
+                            <div class="template-list">
+                                <div class="template-item">
+                                    <div class="template-info">
+                                        <h4>数学期中考试模板</h4>
+                                        <p>适用于高中数学期中考试评分</p>
+                                        <span class="template-meta">创建时间：2024-08-01</span>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn btn-outline">编辑</button>
+                                        <button class="btn btn-outline">复制</button>
+                                        <button class="btn btn-danger-outline">删除</button>
+                                    </div>
+                                </div>
+                                <div class="template-item">
+                                    <div class="template-info">
+                                        <h4>英语作文评分模板</h4>
+                                        <p>适用于高中英语作文评分</p>
+                                        <span class="template-meta">创建时间：2024-07-28</span>
+                                    </div>
+                                    <div class="template-actions">
+                                        <button class="btn btn-outline">编辑</button>
+                                        <button class="btn btn-outline">复制</button>
+                                        <button class="btn btn-danger-outline">删除</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 系统管理 -->
+            <section id="system" class="settings-section">
+                <div class="section-header">
+                    <h2>系统管理</h2>
+                    <p>管理用户权限、数据备份和系统监控（需要管理员权限）</p>
+                </div>
+
+                <div class="settings-cards">
+                    <!-- 用户管理 -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3>用户管理</h3>
+                            <button class="btn btn-primary">添加用户</button>
+                        </div>
+                        <div class="card-content">
+                            <div class="user-management">
+                                <div class="filters">
+                                    <select class="form-select">
+                                        <option>全部状态</option>
+                                        <option>正常</option>
+                                        <option>已禁用</option>
+                                    </select>
+                                    <select class="form-select">
+                                        <option>全部权限</option>
+                                        <option>管理员</option>
+                                        <option>教师</option>
+                                    </select>
+                                </div>
+                                <div class="user-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>用户名</th>
+                                                <th>邮箱</th>
+                                                <th>权限</th>
+                                                <th>状态</th>
+                                                <th>最后登录</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>张老师</td>
+                                                <td>zhang.teacher@school.edu.cn</td>
+                                                <td><span class="badge badge-primary">管理员</span></td>
+                                                <td><span class="badge badge-success">正常</span></td>
+                                                <td>2024-08-03 09:30</td>
+                                                <td>
+                                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn-icon"><i class="fas fa-ban"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>李老师</td>
+                                                <td>li.teacher@school.edu.cn</td>
+                                                <td><span class="badge badge-secondary">教师</span></td>
+                                                <td><span class="badge badge-success">正常</span></td>
+                                                <td>2024-08-02 14:20</td>
+                                                <td>
+                                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn-icon"><i class="fas fa-ban"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数据管理 -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3>数据管理</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="data-management">
+                                <div class="management-item">
+                                    <div class="management-info">
+                                        <h4>数据备份</h4>
+                                        <p>定期备份系统数据，确保数据安全</p>
+                                        <span class="meta-info">最后备份：2024-08-03 02:00</span>
+                                    </div>
+                                    <div class="management-actions">
+                                        <button class="btn btn-primary">立即备份</button>
+                                        <button class="btn btn-outline">下载备份</button>
+                                    </div>
+                                </div>
+                                <div class="management-item">
+                                    <div class="management-info">
+                                        <h4>数据导入导出</h4>
+                                        <p>批量导入导出用户数据和考试数据</p>
+                                    </div>
+                                    <div class="management-actions">
+                                        <button class="btn btn-outline">导入数据</button>
+                                        <button class="btn btn-outline">导出数据</button>
+                                    </div>
+                                </div>
+                                <div class="management-item">
+                                    <div class="management-info">
+                                        <h4>数据清理</h4>
+                                        <p>清理过期数据和临时文件</p>
+                                        <span class="meta-info">系统存储使用：2.3GB / 10GB</span>
+                                    </div>
+                                    <div class="management-actions">
+                                        <button class="btn btn-danger">开始清理</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 系统监控 -->
+                    <div class="settings-card">
+                        <div class="card-header">
+                            <h3>系统监控</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="monitoring-grid">
+                                <div class="monitor-item">
+                                    <div class="monitor-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="monitor-info">
+                                        <h4>在线用户</h4>
+                                        <div class="monitor-value">12</div>
+                                    </div>
+                                </div>
+                                <div class="monitor-item">
+                                    <div class="monitor-icon">
+                                        <i class="fas fa-tasks"></i>
+                                    </div>
+                                    <div class="monitor-info">
+                                        <h4>处理中任务</h4>
+                                        <div class="monitor-value">5</div>
+                                    </div>
+                                </div>
+                                <div class="monitor-item">
+                                    <div class="monitor-icon">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <div class="monitor-info">
+                                        <h4>存储使用率</h4>
+                                        <div class="monitor-value">23%</div>
+                                    </div>
+                                </div>
+                                <div class="monitor-item">
+                                    <div class="monitor-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="monitor-info">
+                                        <h4>系统错误</h4>
+                                        <div class="monitor-value">2</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="log-section">
+                                <h4>最近错误日志</h4>
+                                <div class="log-list">
+                                    <div class="log-item">
+                                        <span class="log-time">2024-08-03 10:30</span>
+                                        <span class="log-level error">ERROR</span>
+                                        <span class="log-message">图片处理服务连接超时</span>
+                                    </div>
+                                    <div class="log-item">
+                                        <span class="log-time">2024-08-03 09:15</span>
+                                        <span class="log-level warning">WARN</span>
+                                        <span class="log-message">磁盘空间使用率超过80%</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline">查看完整日志</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>
